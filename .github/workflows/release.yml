@@ -1,0 +1,52 @@
+name: Publish an immutable reviewed release
+
+on:
+  workflow_dispatch:
+    inputs:
+      tag:
+        description: Version tag such as v2026.07.10
+        required: true
+        type: string
+
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out reviewed main
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Validate requested tag
+        shell: bash
+        env:
+          TAG: ${{ inputs.tag }}
+        run: |
+          [[ "$TAG" =~ ^v[0-9]{4}\.[0-9]{2}\.[0-9]{2}([.-][0-9]+)?$ ]]
+          ! git rev-parse "$TAG" >/dev/null 2>&1
+      - name: Validate and rebuild reviewed content
+        run: make test
+      - name: Build immutable release assets
+        env:
+          TAG: ${{ inputs.tag }}
+        run: python3 scripts/package_release.py "$TAG"
+      - name: Create signed-off tag and GitHub Release
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          TAG: ${{ inputs.tag }}
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git tag -a "$TAG" -m "Reviewed ProxyRule release $TAG"
+          git push origin "$TAG"
+          gh release create "$TAG" \
+            "dist/ProxyRule-$TAG.tar.gz" \
+            "dist/ProxyRule-$TAG.zip" \
+            "dist/SHA256SUMS" \
+            "dist/ProxyRule-$TAG/config/openclash-pinned-stable.yaml" \
+            "dist/ProxyRule-$TAG/config/openclash-pinned-redir-host.yaml" \
+            --verify-tag --generate-notes --title "ProxyRule $TAG"

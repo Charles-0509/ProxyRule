@@ -1,0 +1,18 @@
+payload:
+  - +.lan
+  - +.local
+  - +.localhost
+  - +.home.arpa
+  - +.router.asus.com
+  - +.routerlogin.net
+  - +.miwifi.com
+  - +.tplogin.cn
+  - +.phicomm.me
+  - +.leike.cc
+  - +.p.to
+  - +.peiluyou.com
+  - +.oray.com
+  - +.3322.net
+  - +.ip6.arpa
+  - +.in-addr.arpa
+  - '*stun*'

@@ -1,0 +1,71 @@
+name: Propose reviewed upstream updates
+
+on:
+  schedule:
+    - cron: '17 3 * * 1'
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: upstream-sync
+  cancel-in-progress: false
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out main
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+        with:
+          ref: main
+          fetch-depth: 0
+      - name: Download upstream content as untrusted data
+        id: sync
+        shell: bash
+        run: |
+          set +e
+          python3 scripts/sync_sources.py --update
+          rc=$?
+          echo "result=$rc" >> "$GITHUB_OUTPUT"
+          exit 0
+      - name: Stop when nothing changed
+        id: changes
+        shell: bash
+        run: |
+          if git diff --quiet; then
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+          else
+            echo "changed=true" >> "$GITHUB_OUTPUT"
+          fi
+      - name: Build generated MRS candidates
+        if: steps.changes.outputs.changed == 'true'
+        run: python3 scripts/build_mrs.py
+      - name: Commit automation branch
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        env:
+          BRANCH: automation/upstream-sync
+        run: |
+          git config user.name github-actions[bot]
+          git config user.email 41898282+github-actions[bot]@users.noreply.github.com
+          git checkout -B "$BRANCH"
+          git add sources.json UPSTREAM_UPDATE_REPORT.md rules/source rules/mrs
+          git commit -m "chore: propose upstream rule updates"
+          git push --force-with-lease origin "HEAD:$BRANCH"
+      - name: Create or refresh review PR
+        if: steps.changes.outputs.changed == 'true'
+        shell: bash
+        env:
+          GH_TOKEN: ${{ github.token }}
+          BRANCH: automation/upstream-sync
+          SYNC_RESULT: ${{ steps.sync.outputs.result }}
+        run: |
+          body="Upstream rules were fetched as untrusted data. Review UPSTREAM_UPDATE_REPORT.md and every changed rule before merging. Sync validation exit code: $SYNC_RESULT. This PR is never merged automatically."
+          if gh pr view "$BRANCH" >/dev/null 2>&1; then
+            gh pr edit "$BRANCH" --title "chore: review upstream rule updates" --body "$body"
+          else
+            gh pr create --base main --head "$BRANCH" --title "chore: review upstream rule updates" --body "$body"
+          fi

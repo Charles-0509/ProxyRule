@@ -1,0 +1,35 @@
+name: Validate rules and OpenClash configs
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  validate:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out reviewed content
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5
+      - name: Validate committed sources
+        run: python3 scripts/sync_sources.py --validate-local
+      - name: Rebuild MRS files reproducibly
+        run: python3 scripts/build_mrs.py
+      - name: Regenerate public configs
+        run: python3 scripts/generate_configs.py
+      - name: Ensure generated files are committed
+        run: git diff --exit-code -- rules/mrs config
+      - name: Run repository tests
+        run: python3 -m unittest discover -s tests -v
+      - name: Generate an offline test configuration
+        run: python3 scripts/generate_configs.py --test-mode --output-dir .cache
+      - name: Validate with pinned Mihomo
+        run: mkdir -p .cache/mihomo-home && SAFE_PATHS="$PWD" $(python3 scripts/ensure_mihomo.py) -t -d .cache/mihomo-home -f .cache/openclash-test.yaml

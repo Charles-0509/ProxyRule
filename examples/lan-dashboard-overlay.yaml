@@ -1,0 +1,3 @@
+# 这不是独立配置。只有确实需要从 LAN 访问 Mihomo API 时才合并。
+external-controller: 0.0.0.0:9090
+secret: CHANGE_ME_TO_A_UNIQUE_LONG_RANDOM_SECRET

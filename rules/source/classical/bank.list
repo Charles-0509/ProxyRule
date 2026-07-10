@@ -1,0 +1,285 @@
+# =========================
+# Mainland China Banks
+# =========================
+
+# 中国工商银行
+DOMAIN-SUFFIX,icbc.com.cn
+DOMAIN-SUFFIX,icbc.com
+
+# 中国农业银行
+DOMAIN-SUFFIX,abchina.com
+DOMAIN-SUFFIX,abchina.com.cn
+
+# 中国建设银行
+DOMAIN-SUFFIX,ccb.com
+DOMAIN-SUFFIX,ccb.com.cn
+
+# 交通银行
+DOMAIN-SUFFIX,bankcomm.com
+DOMAIN-SUFFIX,bankcomm.com.cn
+
+# 招商银行
+DOMAIN-SUFFIX,cmbchina.com
+DOMAIN-SUFFIX,cmbchina.com.cn
+
+# 中国邮政储蓄银行
+DOMAIN-SUFFIX,psbc.com
+DOMAIN-SUFFIX,psbc.com.cn
+
+# 中国光大银行
+DOMAIN-SUFFIX,cebbank.com
+DOMAIN-SUFFIX,cebbank.com.cn
+
+# 平安银行
+DOMAIN-SUFFIX,pingan.com
+DOMAIN-SUFFIX,bank.pingan.com
+
+# 中信银行
+DOMAIN-SUFFIX,citicbank.com
+DOMAIN-SUFFIX,citicbank.com.cn
+
+# 兴业银行
+DOMAIN-SUFFIX,cib.com.cn
+DOMAIN-SUFFIX,cib.com
+
+# 浦发银行
+DOMAIN-SUFFIX,spdb.com.cn
+DOMAIN-SUFFIX,spdb.com
+
+# 华夏银行
+DOMAIN-SUFFIX,hxb.com.cn
+DOMAIN-SUFFIX,hxb.com
+
+# 北京银行
+DOMAIN-SUFFIX,bankofbeijing.com.cn
+
+# 上海银行
+DOMAIN-SUFFIX,bankofshanghai.com
+DOMAIN-SUFFIX,bosh.cn
+
+# 宁波银行
+DOMAIN-SUFFIX,nbcb.com.cn
+DOMAIN-SUFFIX,nbcb.com
+
+# 浙商银行
+DOMAIN-SUFFIX,czbank.com
+DOMAIN-SUFFIX,czbank.cn
+
+# 徽商银行
+DOMAIN-SUFFIX,hsbank.com.cn
+
+# 上海农商银行
+DOMAIN-SUFFIX,bosc.cn
+DOMAIN-SUFFIX,srcb.com
+
+# 中国银行
+DOMAIN-SUFFIX,boc.cn
+DOMAIN-SUFFIX,bankofchina.com
+
+# 银联（强烈建议加入）
+DOMAIN-SUFFIX,95516.com
+DOMAIN-SUFFIX,unionpayintl.com
+
+
+# =========================
+# Hong Kong Banks
+# =========================
+
+# 汇丰银行香港
+DOMAIN-SUFFIX,hsbc.com.hk
+DOMAIN-SUFFIX,hsbc.com
+DOMAIN-SUFFIX,hsbc.com.cn
+DOMAIN-SUFFIX,hsbc.com.sg
+
+# 恒生银行
+DOMAIN-SUFFIX,hangseng.com
+DOMAIN-SUFFIX,hangseng.com.cn
+
+# 中银香港
+DOMAIN-SUFFIX,bochk.com
+
+# 渣打银行香港
+DOMAIN-SUFFIX,sc.com
+DOMAIN-SUFFIX,sc.com.hk
+
+# 星展银行香港
+DOMAIN-SUFFIX,dbs.com.hk
+DOMAIN-SUFFIX,dbs.com
+DOMAIN-SUFFIX,dbs.com.sg
+
+# 花旗银行香港
+DOMAIN-SUFFIX,citibank.com.hk
+DOMAIN-SUFFIX,citi.com.hk
+
+# ZA Bank（众安银行香港）
+DOMAIN-SUFFIX,za.bank
+DOMAIN-SUFFIX,za.group
+DOMAIN-SUFFIX,zajourney.com
+DOMAIN-SUFFIX,zacdn.cn
+
+# WeLab Bank（汇立银行）
+DOMAIN-SUFFIX,welab.bank
+
+# Livi Bank（理慧银行）
+DOMAIN-SUFFIX,livi.bank
+DOMAIN-SUFFIX,livibank.com
+
+# 天星银行 Airstar Bank
+DOMAIN-SUFFIX,airstarbank.com
+
+# 工银亚洲
+DOMAIN-SUFFIX,icbcasia.com
+
+# 东亚银行
+DOMAIN-SUFFIX,hkbea.com
+
+# 富邦银行香港
+DOMAIN-SUFFIX,fubonbank.com.hk
+
+# 华侨永亨银行
+DOMAIN-SUFFIX,ocbcwhhk.com
+DOMAIN-SUFFIX,ocbc.com
+DOMAIN-SUFFIX,ocbc.com.sg
+
+# 长江银行
+DOMAIN-SUFFIX,chbank.com
+
+# 大众银行香港
+DOMAIN-SUFFIX,publicbank.com.hk
+
+
+# =========================
+# Macau Banks
+# =========================
+
+# 中国银行澳门分行
+DOMAIN-SUFFIX,bocmacau.com
+
+# 大西洋银行 BNU
+DOMAIN-SUFFIX,bnu.com.mo
+
+# 华侨银行澳门
+DOMAIN-SUFFIX,ocbc.com.mo
+DOMAIN-SUFFIX,ocbc.com
+
+# 工银澳门
+DOMAIN-SUFFIX,icbc.com.mo
+
+# 建行澳门
+DOMAIN-SUFFIX,ccb.com.mo
+
+
+# =========================
+# Taiwan Banks
+# =========================
+
+# 中国信托银行
+DOMAIN-SUFFIX,ctbcbank.com
+
+# 富邦金控
+DOMAIN-SUFFIX,fubon.com
+DOMAIN-SUFFIX,fubon.com.tw
+DOMAIN-SUFFIX,fubonbank.com.tw
+
+# 台新银行
+DOMAIN-SUFFIX,taishinbank.com.tw
+DOMAIN-SUFFIX,taishin.com
+
+# 玉山银行
+DOMAIN-SUFFIX,esunbank.com.tw
+DOMAIN-SUFFIX,esunbank.com
+
+# 永丰银行
+DOMAIN-SUFFIX,sinopac.com
+DOMAIN-SUFFIX,sinopacbank.com.tw
+
+# 兆丰银行
+DOMAIN-SUFFIX,megabank.com.tw
+
+# 台湾银行
+DOMAIN-SUFFIX,bot.com.tw
+
+# 第一银行
+DOMAIN-SUFFIX,firstbank.com.tw
+
+# 土地银行
+DOMAIN-SUFFIX,landbank.com.tw
+
+# 台中银行
+DOMAIN-SUFFIX,tcbbank.com.tw
+
+
+# =========================
+# Singapore Banks
+# =========================
+
+# 星展银行 DBS
+DOMAIN-SUFFIX,dbs.com
+DOMAIN-SUFFIX,dbs.com.sg
+
+# 华侨银行 OCBC
+DOMAIN-SUFFIX,ocbc.com
+DOMAIN-SUFFIX,ocbc.com.sg
+
+# 大华银行 UOB
+DOMAIN-SUFFIX,uob.com.sg
+DOMAIN-SUFFIX,uob.com
+DOMAIN-SUFFIX,uobgroup.com
+
+
+# =========================
+# Japan Banks
+# =========================
+
+# 三菱日联金融集团 MUFG
+DOMAIN-SUFFIX,mufg.jp
+
+# 瑞穗金融集团 Mizuho
+DOMAIN-SUFFIX,mizuho-fg.co.jp
+DOMAIN-SUFFIX,mizuhobank.co.jp
+DOMAIN-SUFFIX,mizuho-sc.com
+DOMAIN-SUFFIX,mizuho-tb.co.jp
+
+# 三井住友金融集团 SMFG
+DOMAIN-SUFFIX,smfg.co.jp
+DOMAIN-SUFFIX,smbc.co.jp
+DOMAIN-SUFFIX,smbcnikko.co.jp
+
+
+# =========================
+# South Korea Banks
+# =========================
+
+# 国民银行 KB
+DOMAIN-SUFFIX,kbfg.com
+DOMAIN-SUFFIX,kbstar.com
+
+# 新韩银行
+DOMAIN-SUFFIX,shinhan.com
+DOMAIN-SUFFIX,shinhancard.com
+
+# 韩亚银行 Woori
+DOMAIN-SUFFIX,wooribank.com
+DOMAIN-SUFFIX,woorifg.com
+
+# 韩亚银行 Hana
+DOMAIN-SUFFIX,kebhana.com
+DOMAIN-SUFFIX,hanacard.co.kr
+DOMAIN-SUFFIX,hanafn.com
+
+
+# =========================
+# Southeast Asia Common Banks
+# =========================
+
+# 马来亚银行 Maybank
+DOMAIN-SUFFIX,maybank.com
+DOMAIN-SUFFIX,maybank2u.com.my
+
+# 联昌银行 CIMB
+DOMAIN-SUFFIX,cimb.com
+DOMAIN-SUFFIX,cimbclicks.com.my
+
+# 兴业银行 RHB
+DOMAIN-SUFFIX,rhbgroup.com
+DOMAIN-SUFFIX,rhb.com.my

@@ -1,0 +1,10 @@
+# 这不是独立配置。仅在 WAN、LAN、运营商和代理节点均已验证 IPv6 后，
+# 将这些字段合并到主配置的对应位置。
+ipv6: true
+
+dns:
+  ipv6: true
+  fake-ip-range6: fdfe:dcba:9876::1/64
+
+tun:
+  inet6-address: fdfe:dcba:9876::1/126
