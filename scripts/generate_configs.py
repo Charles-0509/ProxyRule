@@ -110,36 +110,45 @@ proxies:
 
 
 def group_mapping(name: str, proxies: list[str]) -> list[str]:
-    return [f"  - name: {name}", "    type: select", "    proxies:"] + [f"      - {item}" for item in proxies]
+    unique_proxies = list(dict.fromkeys(proxies))
+    return [f"  - name: {name}", "    type: select", "    proxies:"] + [f"      - {item}" for item in unique_proxies]
 
 
 def groups_block() -> str:
     lines = ["proxy-groups:"]
     all_filter = r"(?i)^(?!(?:直连|拒绝)$).+"
     lines += [
-        "  - name: 全部节点", "    type: select", "    include-all: true", f"    filter: {q(all_filter)}",
-        "  - name: 自动选择", "    type: url-test", "    include-all: true", f"    filter: {q(all_filter)}",
+        "  - name: 所有-手动", "    type: select", "    include-all: true", f"    filter: {q(all_filter)}",
+        "  - name: 所有-自动", "    type: url-test", "    include-all: true", f"    filter: {q(all_filter)}",
         f"    url: {TEST_URL}", "    interval: 300", "    tolerance: 50", "    lazy: true",
+        "  - name: 所有-故转", "    type: fallback", "    proxies:", "      - 所有-手动", "      - 所有-自动",
+        f"    url: {TEST_URL}", "    interval: 300", "    lazy: true",
     ]
     for name, regex in REGIONS:
         lines += [
             f"  - name: {name}-手动", "    type: select", "    include-all: true", f"    filter: {q(regex)}",
             f"  - name: {name}-自动", "    type: url-test", "    include-all: true", f"    filter: {q(regex)}",
             f"    url: {TEST_URL}", "    interval: 300", "    tolerance: 50", "    lazy: true",
+            f"  - name: {name}-故转", "    type: fallback", "    proxies:", f"      - {name}-手动", f"      - {name}-自动",
+            f"    url: {TEST_URL}", "    interval: 300", "    lazy: true",
         ]
     lines += [
         "  - name: 其他地区-手动", "    type: select", "    include-all: true", f"    filter: {q(OTHER_FILTER)}",
         "  - name: 其他地区-自动", "    type: url-test", "    include-all: true", f"    filter: {q(OTHER_FILTER)}",
         f"    url: {TEST_URL}", "    interval: 300", "    tolerance: 50", "    lazy: true",
+        "  - name: 其他地区-故转", "    type: fallback", "    proxies:", "      - 其他地区-手动", "      - 其他地区-自动",
+        f"    url: {TEST_URL}", "    interval: 300", "    lazy: true",
     ]
-    node_choices = ["自动选择"] + [f"{name}-自动" for name, _ in REGIONS] + ["其他地区-自动", "全部节点"] + [f"{name}-手动" for name, _ in REGIONS] + ["其他地区-手动", "直连"]
+    fallbacks = [f"{name}-故转" for name, _ in REGIONS] + ["其他地区-故转"]
+    node_choices = ["美国-故转", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动"] + [f"{name}-手动" for name, _ in REGIONS] + [f"{name}-自动" for name, _ in REGIONS] + ["其他地区-手动", "其他地区-自动", "直连"]
     lines += group_mapping("节点选择", node_choices)
-    lines += group_mapping("规则更新", ["自动选择", "节点选择", "直连"])
-    service_choices = ["节点选择"] + [f"{name}-自动" for name, _ in REGIONS] + ["其他地区-自动", "全部节点", "直连", "拒绝"]
+    lines += group_mapping("规则更新", ["美国-故转", "节点选择", "所有-故转", "直连"])
+    service_choices = ["美国-故转", "节点选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "直连", "拒绝"]
     for name in ["AI", "GitHub", "Telegram", "社交媒体", "YouTube", "流媒体", "Spotify", "游戏", "Apple", "Microsoft", "Google", "加密货币", "国外", "其他"]:
         lines += group_mapping(name, service_choices)
-    lines += group_mapping("Test", ["节点选择", "直连", "拒绝"])
-    lines += group_mapping("国内", ["直连", "节点选择", "自动选择"])
+    lines += group_mapping("ApplePush", ["直连", "美国-故转", "节点选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "拒绝"])
+    lines += group_mapping("Test", ["美国-故转", "节点选择", "直连", "拒绝"])
+    lines += group_mapping("国内", ["直连", "美国-故转", "节点选择", "所有-自动"])
     lines += group_mapping("广告拦截", ["拒绝", "直连", "节点选择"])
     return "\n".join(lines)
 
@@ -193,6 +202,7 @@ def dns_block(enhanced_mode: str) -> str:
 def rules_block() -> str:
     rules = [
         "DOMAIN-SUFFIX,lan,国内", "DOMAIN-SUFFIX,local,国内", "DOMAIN-SUFFIX,home.arpa,国内",
+        "DOMAIN-SUFFIX,edu.cn,国内", "DOMAIN-SUFFIX,zfye.site,国内",
         "IP-CIDR,127.0.0.0/8,国内,no-resolve", "IP-CIDR,10.0.0.0/8,国内,no-resolve",
         "IP-CIDR,100.64.0.0/10,国内,no-resolve", "IP-CIDR,169.254.0.0/16,国内,no-resolve",
         "IP-CIDR,172.16.0.0/12,国内,no-resolve", "IP-CIDR,192.168.0.0/16,国内,no-resolve",
@@ -201,7 +211,7 @@ def rules_block() -> str:
         "IP-CIDR6,fe80::/10,国内,no-resolve", "IP-CIDR6,ff00::/8,国内,no-resolve",
         "RULE-SET,bank,国内", "RULE-SET,compatibility,国内", "RULE-SET,private-domain,国内",
         "RULE-SET,category-ads-all,广告拦截", "RULE-SET,block,广告拦截",
-        "RULE-SET,apple-push,国内", "RULE-SET,connectivity-check,国内", "RULE-SET,category-ntp,国内",
+        "RULE-SET,apple-push,ApplePush", "RULE-SET,connectivity-check,国内", "RULE-SET,category-ntp,国内",
         "RULE-SET,test,Test",
         "RULE-SET,openai,AI", "RULE-SET,claude,AI", "RULE-SET,meta-ai,AI", "RULE-SET,perplexity,AI",
         "RULE-SET,copilot,AI", "RULE-SET,gemini,AI", "RULE-SET,groq,AI", "RULE-SET,grok,AI",
@@ -209,7 +219,7 @@ def rules_block() -> str:
         "RULE-SET,telegram-domain,Telegram", "RULE-SET,telegram-ip,Telegram,no-resolve",
         "RULE-SET,x,社交媒体", "RULE-SET,whatsapp,社交媒体", "RULE-SET,facebook,社交媒体",
         "RULE-SET,instagram,社交媒体", "RULE-SET,reddit,社交媒体", "RULE-SET,discord,社交媒体",
-        "RULE-SET,apple-cn,国内", "RULE-SET,apple-push,国内", "RULE-SET,apple,Apple", "RULE-SET,apple-custom,Apple",
+        "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple", "RULE-SET,apple-custom,Apple",
         "RULE-SET,microsoft,Microsoft", "RULE-SET,onedrive,Microsoft",
         "RULE-SET,google-domain,Google", "RULE-SET,google-ip,Google,no-resolve",
         "RULE-SET,okx,加密货币", "RULE-SET,bybit,加密货币", "RULE-SET,binance,加密货币",
@@ -241,8 +251,12 @@ log-level: info
 ipv6: false
 unified-delay: true
 tcp-concurrent: true
-external-controller: 127.0.0.1:9090
-secret: ''
+external-controller: 0.0.0.0:9090
+external-controller-cors:
+  allow-origins:
+    - '*'
+  allow-private-network: true
+secret: 'CHANGE_ME_TO_A_UNIQUE_LONG_RANDOM_SECRET'
 
 profile:
   store-selected: true

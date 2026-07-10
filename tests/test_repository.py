@@ -58,7 +58,9 @@ class RepositoryTests(unittest.TestCase):
             self.assertTrue(all(url.startswith("https://raw.githubusercontent.com/Charles-0509/ProxyRule/main/") for url in rule_urls))
 
     def test_safe_controller_and_dns_defaults(self):
-        self.assertIn("external-controller: 127.0.0.1:9090", self.stable)
+        self.assertIn("external-controller: 0.0.0.0:9090", self.stable)
+        self.assertIn("allow-private-network: true", self.stable)
+        self.assertIn("secret: 'CHANGE_ME_TO_A_UNIQUE_LONG_RANDOM_SECRET'", self.stable)
         self.assertIn("fake-ip-range: 198.18.0.1/16", self.stable)
         self.assertIn("enhanced-mode: redir-host", self.redir)
         self.assertNotIn("fake-ip-range:", self.redir)
@@ -70,10 +72,12 @@ class RepositoryTests(unittest.TestCase):
 
     def test_rule_order_and_representative_routes(self):
         expected = [
+            "DOMAIN-SUFFIX,edu.cn,国内",
+            "DOMAIN-SUFFIX,zfye.site,国内",
             "IP-CIDR,192.168.0.0/16,国内,no-resolve",
             "RULE-SET,bank,国内",
             "RULE-SET,category-ads-all,广告拦截",
-            "RULE-SET,apple-push,国内",
+            "RULE-SET,apple-push,ApplePush",
             "RULE-SET,openai,AI",
             "RULE-SET,github,GitHub",
             "RULE-SET,telegram-ip,Telegram,no-resolve",
@@ -110,6 +114,17 @@ class RepositoryTests(unittest.TestCase):
         self.assertIsNone(compiled["英国"].search("英伟达 美国节点"))
         self.assertIsNone(compiled["美国"].search("RUS Russia"))
 
+    def test_fallback_groups_and_proxy_defaults(self):
+        self.assertIn("- name: 所有-故转", self.stable)
+        for region, _ in GENERATOR.REGIONS:
+            self.assertIn(f"- name: {region}-自动", self.stable)
+            self.assertIn(f"- name: {region}-故转", self.stable)
+        self.assertIn("- name: 其他地区-故转", self.stable)
+        ai_block = self.stable.split("  - name: AI\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(ai_block, r"proxies:\n\s+- 美国-故转")
+        apple_push_block = self.stable.split("  - name: ApplePush\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(apple_push_block, r"proxies:\n\s+- 直连")
+
     def test_update_report_has_no_unresolved_alerts(self):
         report = (ROOT / "UPSTREAM_UPDATE_REPORT.md").read_text(encoding="utf-8")
         self.assertIn("- Failures: 0", report)
@@ -119,6 +134,7 @@ class RepositoryTests(unittest.TestCase):
         for config in [self.stable, self.redir]:
             self.assertEqual(1, config.count("replace-with-provider-1-subscription"))
             self.assertEqual(1, config.count("replace-with-provider-2-subscription"))
+            self.assertEqual(1, config.count("CHANGE_ME_TO_A_UNIQUE_LONG_RANDOM_SECRET"))
             self.assertNotRegex(config, r"(?i)(github_pat_|ghp_|bearer\s+[a-z0-9])")
 
 
