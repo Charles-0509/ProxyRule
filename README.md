@@ -113,6 +113,9 @@ make package TAG=v2026.07.10
 - **GitHub 规则更新失败**：确认“规则更新”组有可用节点，并检查路由器时间；
   TLS 在系统时间错误时会失败。
 - **配置更新后行为未变化**：刷新 rule provider、清空 Mihomo DNS/Fake-IP 缓存并重启核心。
+- **节点实际可用但 Zashboard 测速全超时**：这通常是旧 Zashboard 与新版 Mihomo
+  provider API 不兼容。按[修复 Zashboard 节点测速超时](docs/zashboard-mihomo-api-fix.md)
+  更新前端，无需修改订阅或节点配置。
 
 ## 许可证
 
