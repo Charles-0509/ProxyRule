@@ -143,6 +143,9 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual("手动选择", folders[0]["manualIncludes"][0])
         self.assertNotIn("节点选择", folders[0]["manualIncludes"])
         self.assertTrue(folders[1]["rules"][0]["pattern"].endswith("-故转$"))
+        bootstrap = (ROOT / "config/zashboard-folder-bootstrap.js").read_text(encoding="utf-8")
+        self.assertIn("proxyrule-failover", bootstrap)
+        self.assertNotIn("首选", bootstrap)
 
     def test_update_report_has_no_unresolved_alerts(self):
         report = (ROOT / "UPSTREAM_UPDATE_REPORT.md").read_text(encoding="utf-8")
