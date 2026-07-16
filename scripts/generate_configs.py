@@ -121,34 +121,47 @@ def groups_block() -> str:
         "  - name: 所有-手动", "    type: select", "    include-all: true", f"    filter: {q(all_filter)}",
         "  - name: 所有-自动", "    type: url-test", "    include-all: true", f"    filter: {q(all_filter)}",
         f"    url: {TEST_URL}", "    interval: 300", "    tolerance: 50", "    lazy: true",
-        "  - name: 所有-故转", "    type: fallback", "    proxies:", "      - 所有-手动", "      - 所有-自动",
-        f"    url: {TEST_URL}", "    interval: 300", "    lazy: true",
+        "  - name: 所有-首选", "    type: select", "    proxies:", "      - 所有-自动", "      - 所有-手动",
     ]
     for name, regex in REGIONS:
         lines += [
             f"  - name: {name}-手动", "    type: select", "    include-all: true", f"    filter: {q(regex)}",
             f"  - name: {name}-自动", "    type: url-test", "    include-all: true", f"    filter: {q(regex)}",
             f"    url: {TEST_URL}", "    interval: 300", "    tolerance: 50", "    lazy: true",
-            f"  - name: {name}-故转", "    type: fallback", "    proxies:", f"      - {name}-手动", f"      - {name}-自动",
-            f"    url: {TEST_URL}", "    interval: 300", "    lazy: true",
+            f"  - name: {name}-首选", "    type: select", "    proxies:", f"      - {name}-自动", f"      - {name}-手动",
         ]
     lines += [
         "  - name: 其他地区-手动", "    type: select", "    include-all: true", f"    filter: {q(OTHER_FILTER)}",
         "  - name: 其他地区-自动", "    type: url-test", "    include-all: true", f"    filter: {q(OTHER_FILTER)}",
         f"    url: {TEST_URL}", "    interval: 300", "    tolerance: 50", "    lazy: true",
-        "  - name: 其他地区-故转", "    type: fallback", "    proxies:", "      - 其他地区-手动", "      - 其他地区-自动",
-        f"    url: {TEST_URL}", "    interval: 300", "    lazy: true",
+        "  - name: 其他地区-首选", "    type: select", "    proxies:", "      - 其他地区-自动", "      - 其他地区-手动",
     ]
-    fallbacks = [f"{name}-故转" for name, _ in REGIONS] + ["其他地区-故转"]
-    node_choices = ["美国-故转", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动"] + [f"{name}-手动" for name, _ in REGIONS] + [f"{name}-自动" for name, _ in REGIONS] + ["其他地区-手动", "其他地区-自动", "直连"]
+    region_names = [name for name, _ in REGIONS] + ["其他地区"]
+    failover_priority = ["美国", "香港", "日本", "新加坡", "台湾", "韩国", "英国", "其他地区"]
+    lines += ["  - name: 所有-故转", "    type: fallback", "    proxies:", "      - 所有-首选"]
+    lines += [f"      - {name}-自动" for name in failover_priority]
+    lines += [f"    url: {TEST_URL}", "    interval: 300", "    lazy: true"]
+    for name in region_names:
+        ordered = [name] + [item for item in failover_priority if item != name]
+        lines += [f"  - name: {name}-故转", "    type: fallback", "    proxies:", f"      - {name}-首选"]
+        lines += [f"      - {item}-自动" for item in ordered[1:]]
+        lines += [f"    url: {TEST_URL}", "    interval: 300", "    lazy: true"]
+    fallbacks = [f"{name}-故转" for name in region_names]
+    lines += group_mapping("手动选择-故转", ["美国-故转", "香港-故转", "台湾-故转", "日本-故转", "新加坡-故转", "韩国-故转", "英国-故转", "其他地区-故转", "所有-故转"])
+    node_choices = ["手动选择-故转", "所有-故转"] + fallbacks + ["所有-首选", "所有-手动", "所有-自动"] + [f"{name}-首选" for name in region_names] + [f"{name}-手动" for name, _ in REGIONS] + [f"{name}-自动" for name, _ in REGIONS] + ["其他地区-手动", "其他地区-自动", "直连"]
     lines += group_mapping("节点选择", node_choices)
-    lines += group_mapping("规则更新", ["美国-故转", "节点选择", "所有-故转", "直连"])
-    service_choices = ["美国-故转", "节点选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "直连", "拒绝"]
-    for name in ["AI", "GitHub", "Telegram", "社交媒体", "YouTube", "流媒体", "Spotify", "游戏", "Apple", "Microsoft", "Google", "加密货币", "国外", "其他"]:
+    lines += group_mapping("规则更新", ["手动选择-故转", "节点选择", "所有-故转", "直连"])
+    service_choices = ["手动选择-故转", "节点选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "直连", "拒绝"]
+    service_groups = [
+        "AI", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
+        "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
+        "Amazon", "Crunchyroll", "流媒体", "Spotify", "游戏", "Apple", "Microsoft", "OneDrive",
+        "Google", "办公协作", "云盘", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
+    ]
+    for name in service_groups:
         lines += group_mapping(name, service_choices)
-    lines += group_mapping("ApplePush", ["直连", "美国-故转", "节点选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "拒绝"])
-    lines += group_mapping("Test", ["美国-故转", "节点选择", "直连", "拒绝"])
-    lines += group_mapping("国内", ["直连", "美国-故转", "节点选择", "所有-自动"])
+    lines += group_mapping("ApplePush", ["直连", "手动选择-故转", "节点选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "拒绝"])
+    lines += group_mapping("国内", ["直连", "手动选择-故转", "节点选择", "所有-自动"])
     lines += group_mapping("广告拦截", ["拒绝", "直连", "节点选择"])
     return "\n".join(lines)
 
@@ -212,20 +225,23 @@ def rules_block() -> str:
         "RULE-SET,bank,国内", "RULE-SET,compatibility,国内", "RULE-SET,private-domain,国内",
         "RULE-SET,category-ads-all,广告拦截", "RULE-SET,block,广告拦截",
         "RULE-SET,apple-push,ApplePush", "RULE-SET,connectivity-check,国内", "RULE-SET,category-ntp,国内",
-        "RULE-SET,test,Test",
+        "RULE-SET,test,测速", "RULE-SET,speedtest,测速",
         "RULE-SET,openai,AI", "RULE-SET,claude,AI", "RULE-SET,meta-ai,AI", "RULE-SET,perplexity,AI",
         "RULE-SET,copilot,AI", "RULE-SET,gemini,AI", "RULE-SET,groq,AI", "RULE-SET,grok,AI",
         "RULE-SET,github,GitHub",
+        "RULE-SET,gitlab,开发工具", "RULE-SET,docker,开发工具", "RULE-SET,cloudflare,Cloudflare",
         "RULE-SET,telegram-domain,Telegram", "RULE-SET,telegram-ip,Telegram,no-resolve",
-        "RULE-SET,x,社交媒体", "RULE-SET,whatsapp,社交媒体", "RULE-SET,facebook,社交媒体",
-        "RULE-SET,instagram,社交媒体", "RULE-SET,reddit,社交媒体", "RULE-SET,discord,社交媒体",
+        "RULE-SET,discord,Discord", "RULE-SET,whatsapp,WhatsApp", "RULE-SET,x,X",
+        "RULE-SET,facebook,Facebook", "RULE-SET,instagram,Instagram", "RULE-SET,reddit,Reddit",
         "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple", "RULE-SET,apple-custom,Apple",
-        "RULE-SET,microsoft,Microsoft", "RULE-SET,onedrive,Microsoft",
+        "RULE-SET,microsoft,Microsoft", "RULE-SET,onedrive,OneDrive", "RULE-SET,dropbox,云盘",
         "RULE-SET,google-domain,Google", "RULE-SET,google-ip,Google,no-resolve",
+        "RULE-SET,notion,办公协作", "RULE-SET,slack,办公协作", "RULE-SET,zoom,办公协作",
+        "RULE-SET,linkedin,LinkedIn", "RULE-SET,paypal,PayPal", "RULE-SET,category-scholar-!cn,学术",
         "RULE-SET,okx,加密货币", "RULE-SET,bybit,加密货币", "RULE-SET,binance,加密货币",
-        "RULE-SET,bilibili,国内", "RULE-SET,youtube,YouTube", "RULE-SET,tiktok,社交媒体",
-        "RULE-SET,netflix-domain,流媒体", "RULE-SET,netflix-ip,流媒体,no-resolve", "RULE-SET,disney,流媒体",
-        "RULE-SET,amazon,流媒体", "RULE-SET,crunchyroll,流媒体", "RULE-SET,popcorn,流媒体", "RULE-SET,hbo,流媒体",
+        "RULE-SET,bilibili,国内", "RULE-SET,youtube,YouTube", "RULE-SET,tiktok,TikTok",
+        "RULE-SET,netflix-domain,Netflix", "RULE-SET,netflix-ip,Netflix,no-resolve", "RULE-SET,disney,Disney+",
+        "RULE-SET,amazon,Amazon", "RULE-SET,crunchyroll,Crunchyroll", "RULE-SET,popcorn,流媒体", "RULE-SET,hbo,HBO",
         "RULE-SET,spotify,Spotify",
         "RULE-SET,nvidia,游戏", "RULE-SET,steam,游戏", "RULE-SET,epic,游戏", "RULE-SET,ea,游戏",
         "RULE-SET,blizzard,游戏", "RULE-SET,ubi,游戏", "RULE-SET,playstation,游戏", "RULE-SET,nintendo,游戏",

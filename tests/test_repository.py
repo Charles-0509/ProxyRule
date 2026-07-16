@@ -32,7 +32,7 @@ class RepositoryTests(unittest.TestCase):
 
     def test_manifest_ids_and_paths_are_unique(self):
         sources = self.manifest["sources"]
-        self.assertEqual(60, len(sources))
+        self.assertEqual(71, len(sources))
         for key in ["id", "source_path", "runtime_path"]:
             values = [item[key] for item in sources]
             if key == "runtime_path":
@@ -80,7 +80,10 @@ class RepositoryTests(unittest.TestCase):
             "RULE-SET,apple-push,ApplePush",
             "RULE-SET,openai,AI",
             "RULE-SET,github,GitHub",
+            "RULE-SET,gitlab,开发工具",
             "RULE-SET,telegram-ip,Telegram,no-resolve",
+            "RULE-SET,notion,办公协作",
+            "RULE-SET,category-scholar-!cn,学术",
             "RULE-SET,bilibili,国内",
             "RULE-SET,china-domain,国内",
             "RULE-SET,proxy,国外",
@@ -118,12 +121,29 @@ class RepositoryTests(unittest.TestCase):
         self.assertIn("- name: 所有-故转", self.stable)
         for region, _ in GENERATOR.REGIONS:
             self.assertIn(f"- name: {region}-自动", self.stable)
+            self.assertIn(f"- name: {region}-首选", self.stable)
             self.assertIn(f"- name: {region}-故转", self.stable)
         self.assertIn("- name: 其他地区-故转", self.stable)
+        manual_failover = self.stable.split("  - name: 手动选择-故转\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(manual_failover, r"proxies:\n\s+- 美国-故转")
+        us_preferred = self.stable.split("  - name: 美国-首选\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(us_preferred, r"proxies:\n\s+- 美国-自动\n\s+- 美国-手动")
+        us_fallback = self.stable.split("  - name: 美国-故转\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(us_fallback, r"proxies:\n\s+- 美国-首选")
+        self.assertIn("香港-自动", us_fallback)
         ai_block = self.stable.split("  - name: AI\n", 1)[1].split("  - name:", 1)[0]
-        self.assertRegex(ai_block, r"proxies:\n\s+- 美国-故转")
+        self.assertRegex(ai_block, r"proxies:\n\s+- 手动选择-故转")
         apple_push_block = self.stable.split("  - name: ApplePush\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(apple_push_block, r"proxies:\n\s+- 直连")
+
+    def test_zashboard_folder_profile(self):
+        settings = json.loads((ROOT / "config/zashboard-settings.json").read_text(encoding="utf-8"))
+        self.assertEqual("on", settings["config/proxy-folder-mode-setting"])
+        self.assertEqual("core", settings["config/speedtest-mode"])
+        folders = json.loads(settings["config/proxy-folders"])["folders"]
+        self.assertEqual(["策略组", "故障转移", "节点组"], [item["name"] for item in folders])
+        self.assertEqual("手动选择-故转", folders[0]["manualIncludes"][0])
+        self.assertIn("(?:首选|故转)", folders[1]["rules"][0]["pattern"])
 
     def test_update_report_has_no_unresolved_alerts(self):
         report = (ROOT / "UPSTREAM_UPDATE_REPORT.md").read_text(encoding="utf-8")

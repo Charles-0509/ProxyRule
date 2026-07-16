@@ -31,10 +31,16 @@
 - 未分类境外流量和最终兜底：默认使用“节点选择”。
 - IPv6：默认关闭，避免节点或网络不完整时发生旁路和泄漏。
 
-所有节点及每个地区都同时提供手动、自动测速和故障转移组。所有代理业务
-默认选择“美国-故转”，可在 Zashboard 中按业务切换到其他地区或节点。
+所有节点及每个地区都提供手动、自动测速、首选模式和跨地区故障转移组。
+所有代理业务默认选择“手动选择-故转”，它默认使用“美国-故转”，可在
+Zashboard 中切换首选地区。地区全部不可用时会继续尝试其他地区。
 台湾过滤不包含中国大陆国旗，美国和
 英国缩写使用单词边界，避免 `RUS`、品牌名称等常见误判。
+
+Zashboard 文件夹属于浏览器本地设置。导入
+[Zashboard 设置文件](config/zashboard-settings.json) 后，代理页会显示“策略组”、
+“故障转移”和“节点组”三个标签，详见
+[Zashboard 文件夹说明](docs/zashboard-folders.md)。
 
 ## DNS 与 TUN
 
@@ -116,6 +122,9 @@ make package TAG=v2026.07.10
 - **节点实际可用但 Zashboard 测速全超时**：这通常是旧 Zashboard 与新版 Mihomo
   provider API 不兼容。按[修复 Zashboard 节点测速超时](docs/zashboard-mihomo-api-fix.md)
   更新前端，无需修改订阅或节点配置。
+- **升级 3x-ui 后仅 VLESS Reality 失效**：如果 Xray-core `26.7.11` 配合
+  Mihomo `1.19.28` 出现 `REALITY authentication failed`，参考
+  [Reality 兼容性说明](docs/3x-ui-reality-mihomo-compatibility.md)。
 
 ## 许可证
 
