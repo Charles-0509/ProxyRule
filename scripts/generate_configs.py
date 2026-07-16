@@ -150,7 +150,7 @@ def groups_block() -> str:
         "AI", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
         "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
         "Amazon", "Crunchyroll", "流媒体", "Spotify", "游戏", "Apple", "Microsoft", "OneDrive",
-        "Google", "办公协作", "云盘", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
+        "Google", "办公协作", "Dropbox", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
     ]
     for name in service_groups:
         lines += group_mapping(name, service_choices)
@@ -228,7 +228,7 @@ def rules_block() -> str:
         "RULE-SET,discord,Discord", "RULE-SET,whatsapp,WhatsApp", "RULE-SET,x,X",
         "RULE-SET,facebook,Facebook", "RULE-SET,instagram,Instagram", "RULE-SET,reddit,Reddit",
         "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple", "RULE-SET,apple-custom,Apple",
-        "RULE-SET,microsoft,Microsoft", "RULE-SET,onedrive,OneDrive", "RULE-SET,dropbox,云盘",
+        "RULE-SET,microsoft,Microsoft", "RULE-SET,onedrive,OneDrive", "RULE-SET,dropbox,Dropbox",
         "RULE-SET,google-domain,Google", "RULE-SET,google-ip,Google,no-resolve",
         "RULE-SET,notion,办公协作", "RULE-SET,slack,办公协作", "RULE-SET,zoom,办公协作",
         "RULE-SET,linkedin,LinkedIn", "RULE-SET,paypal,PayPal", "RULE-SET,category-scholar-!cn,学术",

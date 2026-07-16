@@ -789,7 +789,7 @@ proxy-groups:
       - 所有-自动
       - 直连
       - 拒绝
-  - name: 云盘
+  - name: Dropbox
     type: select
     proxies:
       - 手动选择
@@ -1007,7 +1007,7 @@ rules:
   - RULE-SET,apple-custom,Apple
   - RULE-SET,microsoft,Microsoft
   - RULE-SET,onedrive,OneDrive
-  - RULE-SET,dropbox,云盘
+  - RULE-SET,dropbox,Dropbox
   - RULE-SET,google-domain,Google
   - RULE-SET,google-ip,Google,no-resolve
   - RULE-SET,notion,办公协作
