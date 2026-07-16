@@ -152,11 +152,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 所有-首选
-    type: select
-    proxies:
-      - 所有-自动
-      - 所有-手动
   - name: 香港-手动
     type: select
     include-all: true
@@ -169,11 +164,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 香港-首选
-    type: select
-    proxies:
-      - 香港-自动
-      - 香港-手动
   - name: 台湾-手动
     type: select
     include-all: true
@@ -186,11 +176,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 台湾-首选
-    type: select
-    proxies:
-      - 台湾-自动
-      - 台湾-手动
   - name: 日本-手动
     type: select
     include-all: true
@@ -203,11 +188,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 日本-首选
-    type: select
-    proxies:
-      - 日本-自动
-      - 日本-手动
   - name: 新加坡-手动
     type: select
     include-all: true
@@ -220,11 +200,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 新加坡-首选
-    type: select
-    proxies:
-      - 新加坡-自动
-      - 新加坡-手动
   - name: 韩国-手动
     type: select
     include-all: true
@@ -237,11 +212,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 韩国-首选
-    type: select
-    proxies:
-      - 韩国-自动
-      - 韩国-手动
   - name: 美国-手动
     type: select
     include-all: true
@@ -254,11 +224,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 美国-首选
-    type: select
-    proxies:
-      - 美国-自动
-      - 美国-手动
   - name: 英国-手动
     type: select
     include-all: true
@@ -271,11 +236,6 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 英国-首选
-    type: select
-    proxies:
-      - 英国-自动
-      - 英国-手动
   - name: 其他地区-手动
     type: select
     include-all: true
@@ -288,139 +248,87 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
-  - name: 其他地区-首选
-    type: select
-    proxies:
-      - 其他地区-自动
-      - 其他地区-手动
   - name: 所有-故转
     type: fallback
     proxies:
-      - 所有-首选
-      - 美国-自动
-      - 香港-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 台湾-自动
-      - 韩国-自动
-      - 英国-自动
-      - 其他地区-自动
+      - 所有-手动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 香港-故转
     type: fallback
     proxies:
-      - 香港-首选
-      - 美国-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 台湾-自动
-      - 韩国-自动
-      - 英国-自动
-      - 其他地区-自动
+      - 香港-手动
+      - 香港-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 台湾-故转
     type: fallback
     proxies:
-      - 台湾-首选
-      - 美国-自动
-      - 香港-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 韩国-自动
-      - 英国-自动
-      - 其他地区-自动
+      - 台湾-手动
+      - 台湾-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 日本-故转
     type: fallback
     proxies:
-      - 日本-首选
-      - 美国-自动
-      - 香港-自动
-      - 新加坡-自动
-      - 台湾-自动
-      - 韩国-自动
-      - 英国-自动
-      - 其他地区-自动
+      - 日本-手动
+      - 日本-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 新加坡-故转
     type: fallback
     proxies:
-      - 新加坡-首选
-      - 美国-自动
-      - 香港-自动
-      - 日本-自动
-      - 台湾-自动
-      - 韩国-自动
-      - 英国-自动
-      - 其他地区-自动
+      - 新加坡-手动
+      - 新加坡-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 韩国-故转
     type: fallback
     proxies:
-      - 韩国-首选
-      - 美国-自动
-      - 香港-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 台湾-自动
-      - 英国-自动
-      - 其他地区-自动
+      - 韩国-手动
+      - 韩国-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 美国-故转
     type: fallback
     proxies:
-      - 美国-首选
-      - 香港-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 台湾-自动
-      - 韩国-自动
-      - 英国-自动
-      - 其他地区-自动
+      - 美国-手动
+      - 美国-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 英国-故转
     type: fallback
     proxies:
-      - 英国-首选
-      - 美国-自动
-      - 香港-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 台湾-自动
-      - 韩国-自动
-      - 其他地区-自动
+      - 英国-手动
+      - 英国-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
   - name: 其他地区-故转
     type: fallback
     proxies:
-      - 其他地区-首选
-      - 美国-自动
-      - 香港-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 台湾-自动
-      - 韩国-自动
-      - 英国-自动
+      - 其他地区-手动
+      - 其他地区-自动
+      - 所有-自动
     url: https://www.gstatic.com/generate_204
     interval: 300
     lazy: true
-  - name: 手动选择-故转
+  - name: 手动选择
     type: select
     proxies:
       - 美国-故转
@@ -432,59 +340,17 @@ proxy-groups:
       - 英国-故转
       - 其他地区-故转
       - 所有-故转
-  - name: 节点选择
-    type: select
-    proxies:
-      - 手动选择-故转
-      - 所有-故转
-      - 香港-故转
-      - 台湾-故转
-      - 日本-故转
-      - 新加坡-故转
-      - 韩国-故转
-      - 美国-故转
-      - 英国-故转
-      - 其他地区-故转
-      - 所有-首选
-      - 所有-手动
-      - 所有-自动
-      - 香港-首选
-      - 台湾-首选
-      - 日本-首选
-      - 新加坡-首选
-      - 韩国-首选
-      - 美国-首选
-      - 英国-首选
-      - 其他地区-首选
-      - 香港-手动
-      - 台湾-手动
-      - 日本-手动
-      - 新加坡-手动
-      - 韩国-手动
-      - 美国-手动
-      - 英国-手动
-      - 香港-自动
-      - 台湾-自动
-      - 日本-自动
-      - 新加坡-自动
-      - 韩国-自动
-      - 美国-自动
-      - 英国-自动
-      - 其他地区-手动
-      - 其他地区-自动
-      - 直连
   - name: 规则更新
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
+      - 所有-自动
       - 直连
   - name: AI
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -501,8 +367,7 @@ proxy-groups:
   - name: GitHub
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -519,8 +384,7 @@ proxy-groups:
   - name: 开发工具
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -537,8 +401,7 @@ proxy-groups:
   - name: Cloudflare
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -555,8 +418,7 @@ proxy-groups:
   - name: Telegram
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -573,8 +435,7 @@ proxy-groups:
   - name: Discord
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -591,8 +452,7 @@ proxy-groups:
   - name: WhatsApp
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -609,8 +469,7 @@ proxy-groups:
   - name: X
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -627,8 +486,7 @@ proxy-groups:
   - name: Facebook
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -645,8 +503,7 @@ proxy-groups:
   - name: Instagram
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -663,8 +520,7 @@ proxy-groups:
   - name: Reddit
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -681,8 +537,7 @@ proxy-groups:
   - name: TikTok
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -699,8 +554,7 @@ proxy-groups:
   - name: YouTube
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -717,8 +571,7 @@ proxy-groups:
   - name: Netflix
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -735,8 +588,7 @@ proxy-groups:
   - name: Disney+
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -753,8 +605,7 @@ proxy-groups:
   - name: HBO
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -771,8 +622,7 @@ proxy-groups:
   - name: Amazon
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -789,8 +639,7 @@ proxy-groups:
   - name: Crunchyroll
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -807,8 +656,7 @@ proxy-groups:
   - name: 流媒体
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -825,8 +673,7 @@ proxy-groups:
   - name: Spotify
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -843,8 +690,7 @@ proxy-groups:
   - name: 游戏
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -861,8 +707,7 @@ proxy-groups:
   - name: Apple
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -879,8 +724,7 @@ proxy-groups:
   - name: Microsoft
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -897,8 +741,7 @@ proxy-groups:
   - name: OneDrive
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -915,8 +758,7 @@ proxy-groups:
   - name: Google
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -933,8 +775,7 @@ proxy-groups:
   - name: 办公协作
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -951,8 +792,7 @@ proxy-groups:
   - name: 云盘
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -969,8 +809,7 @@ proxy-groups:
   - name: LinkedIn
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -987,8 +826,7 @@ proxy-groups:
   - name: PayPal
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -1005,8 +843,7 @@ proxy-groups:
   - name: 学术
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -1023,8 +860,7 @@ proxy-groups:
   - name: 测速
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -1041,8 +877,7 @@ proxy-groups:
   - name: 加密货币
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -1059,8 +894,7 @@ proxy-groups:
   - name: 国外
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -1077,8 +911,7 @@ proxy-groups:
   - name: 其他
     type: select
     proxies:
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -1096,8 +929,7 @@ proxy-groups:
     type: select
     proxies:
       - 直连
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-故转
       - 香港-故转
       - 台湾-故转
@@ -1114,15 +946,14 @@ proxy-groups:
     type: select
     proxies:
       - 直连
-      - 手动选择-故转
-      - 节点选择
+      - 手动选择
       - 所有-自动
   - name: 广告拦截
     type: select
     proxies:
       - 拒绝
       - 直连
-      - 节点选择
+      - 手动选择
 
 rules:
   - DOMAIN-SUFFIX,lan,国内

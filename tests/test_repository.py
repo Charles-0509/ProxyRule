@@ -121,18 +121,16 @@ class RepositoryTests(unittest.TestCase):
         self.assertIn("- name: 所有-故转", self.stable)
         for region, _ in GENERATOR.REGIONS:
             self.assertIn(f"- name: {region}-自动", self.stable)
-            self.assertIn(f"- name: {region}-首选", self.stable)
             self.assertIn(f"- name: {region}-故转", self.stable)
+            self.assertNotIn(f"- name: {region}-首选", self.stable)
         self.assertIn("- name: 其他地区-故转", self.stable)
-        manual_failover = self.stable.split("  - name: 手动选择-故转\n", 1)[1].split("  - name:", 1)[0]
+        self.assertNotIn("- name: 所有-首选", self.stable)
+        manual_failover = self.stable.split("  - name: 手动选择\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(manual_failover, r"proxies:\n\s+- 美国-故转")
-        us_preferred = self.stable.split("  - name: 美国-首选\n", 1)[1].split("  - name:", 1)[0]
-        self.assertRegex(us_preferred, r"proxies:\n\s+- 美国-自动\n\s+- 美国-手动")
         us_fallback = self.stable.split("  - name: 美国-故转\n", 1)[1].split("  - name:", 1)[0]
-        self.assertRegex(us_fallback, r"proxies:\n\s+- 美国-首选")
-        self.assertIn("香港-自动", us_fallback)
+        self.assertRegex(us_fallback, r"proxies:\n\s+- 美国-手动\n\s+- 美国-自动\n\s+- 所有-自动")
         ai_block = self.stable.split("  - name: AI\n", 1)[1].split("  - name:", 1)[0]
-        self.assertRegex(ai_block, r"proxies:\n\s+- 手动选择-故转")
+        self.assertRegex(ai_block, r"proxies:\n\s+- 手动选择")
         apple_push_block = self.stable.split("  - name: ApplePush\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(apple_push_block, r"proxies:\n\s+- 直连")
 
@@ -142,8 +140,9 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual("core", settings["config/speedtest-mode"])
         folders = json.loads(settings["config/proxy-folders"])["folders"]
         self.assertEqual(["策略组", "故障转移", "节点组"], [item["name"] for item in folders])
-        self.assertEqual("手动选择-故转", folders[0]["manualIncludes"][0])
-        self.assertIn("(?:首选|故转)", folders[1]["rules"][0]["pattern"])
+        self.assertEqual("手动选择", folders[0]["manualIncludes"][0])
+        self.assertNotIn("节点选择", folders[0]["manualIncludes"])
+        self.assertTrue(folders[1]["rules"][0]["pattern"].endswith("-故转$"))
 
     def test_update_report_has_no_unresolved_alerts(self):
         report = (ROOT / "UPSTREAM_UPDATE_REPORT.md").read_text(encoding="utf-8")
