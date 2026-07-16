@@ -985,6 +985,7 @@ rules:
   - RULE-SET,docker,开发工具
   - RULE-SET,cloudflare,Cloudflare
   - RULE-SET,telegram-domain,Telegram
+  - IP-CIDR,194.221.250.50/32,Telegram,no-resolve
   - RULE-SET,telegram-ip,Telegram,no-resolve
   - RULE-SET,discord,Discord
   - RULE-SET,whatsapp,WhatsApp

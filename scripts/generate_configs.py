@@ -12,6 +12,11 @@ ROOT = Path(__file__).resolve().parents[1]
 REPO_RAW = "https://raw.githubusercontent.com/Charles-0509/ProxyRule"
 TEST_URL = "https://www.gstatic.com/generate_204"
 
+# Telegram Desktop was observed using this endpoint on 2026-07-16.  It is not
+# present in MetaCubeX's Telegram GeoIP data, so keep the narrow /32 override
+# ahead of the upstream rule-set instead of broadening the catch-all policy.
+TELEGRAM_OBSERVED_IPS = ["194.221.250.50/32"]
+
 REGIONS = [
     ("香港", r"(?i)(香港|Hong\s*Kong|\bHK\b|🇭🇰)"),
     ("台湾", r"(?i)(台湾|台灣|Tai\s*Wan|Taiwan|\bTW\b|🇹🇼)"),
@@ -224,7 +229,9 @@ def rules_block() -> str:
         "RULE-SET,copilot,AI", "RULE-SET,gemini,AI", "RULE-SET,groq,AI", "RULE-SET,grok,AI",
         "RULE-SET,github,GitHub",
         "RULE-SET,gitlab,开发工具", "RULE-SET,docker,开发工具", "RULE-SET,cloudflare,Cloudflare",
-        "RULE-SET,telegram-domain,Telegram", "RULE-SET,telegram-ip,Telegram,no-resolve",
+        "RULE-SET,telegram-domain,Telegram",
+        *(f"IP-CIDR,{cidr},Telegram,no-resolve" for cidr in TELEGRAM_OBSERVED_IPS),
+        "RULE-SET,telegram-ip,Telegram,no-resolve",
         "RULE-SET,discord,Discord", "RULE-SET,whatsapp,WhatsApp", "RULE-SET,x,X",
         "RULE-SET,facebook,Facebook", "RULE-SET,instagram,Instagram", "RULE-SET,reddit,Reddit",
         "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple", "RULE-SET,apple-custom,Apple",

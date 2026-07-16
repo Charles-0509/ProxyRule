@@ -81,6 +81,7 @@ class RepositoryTests(unittest.TestCase):
             "RULE-SET,openai,AI",
             "RULE-SET,github,GitHub",
             "RULE-SET,gitlab,开发工具",
+            "IP-CIDR,194.221.250.50/32,Telegram,no-resolve",
             "RULE-SET,telegram-ip,Telegram,no-resolve",
             "RULE-SET,notion,办公协作",
             "RULE-SET,category-scholar-!cn,学术",
