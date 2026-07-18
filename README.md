@@ -25,6 +25,9 @@
 
 - 私网、银行、Apple Push、NTP、连接检测和中国大陆域名/IP：直连。
 - ApplePush 在面板中有独立策略组，默认直连，也可以临时切换到任意故转组或节点。
+- `Bing & Rewards`：Bing 搜索与 Microsoft Rewards 的独立策略组，默认直连；它只包含
+  Bing、Rewards 页面及其登录所需域名，不改变 Windows、Office、OneDrive 等其他 Microsoft
+  服务的既有分流。若 Rewards 的地区或登录页需要其他出口，可在 Zashboard 手动切换该组。
 - `*.edu.cn` 和 `*.zfye.site`：无条件直连，优先级高于广告和代理规则。
 - 广告规则：拒绝，可在“广告拦截”组临时切换为直连排查误杀。
 - AI、GitHub、Telegram、社交、流媒体、游戏等：使用各自策略组。

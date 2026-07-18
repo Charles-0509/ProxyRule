@@ -1,0 +1,10 @@
+# Narrow supplement for Microsoft Rewards. Keep authentication endpoints here
+# instead of routing the entire Microsoft ecosystem through this policy.
+payload:
+    - +.rewards.microsoft.com
+    - +.microsoftrewards.com
+    - +.rewardsplatform.microsoft.com
+    - +.s-rewards.hk
+    - account.microsoft.com
+    - account.live.com
+    - login.live.com

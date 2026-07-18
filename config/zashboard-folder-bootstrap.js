@@ -1,5 +1,5 @@
 (() => {
-  const version = '2026-07-16-v3'
+  const version = '2026-07-18-v4'
   const versionKey = 'proxyrule/folder-layout-version'
   if (localStorage.getItem(versionKey) === version) return
 
@@ -7,7 +7,7 @@
     '手动选择', '规则更新', 'AI', 'GitHub', '开发工具', 'Cloudflare', 'Telegram',
     'Discord', 'WhatsApp', 'X', 'Facebook', 'Instagram', 'Reddit', 'TikTok',
     'YouTube', 'Netflix', 'Disney+', 'HBO', 'Amazon', 'Crunchyroll', '流媒体',
-    'Spotify', '游戏', 'Apple', 'Microsoft', 'OneDrive', 'Google', '办公协作',
+    'Spotify', '游戏', 'Apple', 'Bing & Rewards', 'Microsoft', 'OneDrive', 'Google', '办公协作',
     'Dropbox', 'LinkedIn', 'PayPal', '学术', '测速', '加密货币', 'ApplePush',
     '国内', '广告拦截', '国外', '其他',
   ]

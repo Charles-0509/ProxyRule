@@ -32,7 +32,7 @@ class RepositoryTests(unittest.TestCase):
 
     def test_manifest_ids_and_paths_are_unique(self):
         sources = self.manifest["sources"]
-        self.assertEqual(71, len(sources))
+        self.assertEqual(73, len(sources))
         for key in ["id", "source_path", "runtime_path"]:
             values = [item[key] for item in sources]
             if key == "runtime_path":
@@ -81,6 +81,8 @@ class RepositoryTests(unittest.TestCase):
             "RULE-SET,openai,AI",
             "RULE-SET,github,GitHub",
             "RULE-SET,gitlab,开发工具",
+            "RULE-SET,bing,Bing & Rewards",
+            "RULE-SET,microsoft-rewards,Bing & Rewards",
             "IP-CIDR,194.221.250.50/32,Telegram,no-resolve",
             "RULE-SET,telegram-ip,Telegram,no-resolve",
             "RULE-SET,notion,办公协作",
@@ -98,6 +100,7 @@ class RepositoryTests(unittest.TestCase):
             "rules/source/domain/telegram-domain.yaml": ("telegram.org",),
             "rules/source/domain/bilibili.yaml": ("bilibili.com",),
             "rules/source/domain/apple-push.yaml": ("push.apple.com",),
+            "rules/source/domain/microsoft-rewards.yaml": ("rewards.microsoft.com", "login.live.com"),
         }
         for path, needles in checks.items():
             content = (ROOT / path).read_text(encoding="utf-8")
@@ -132,6 +135,8 @@ class RepositoryTests(unittest.TestCase):
         self.assertRegex(us_fallback, r"proxies:\n\s+- 美国-手动\n\s+- 美国-自动\n\s+- 所有-自动")
         ai_block = self.stable.split("  - name: AI\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(ai_block, r"proxies:\n\s+- 手动选择")
+        bing_rewards_block = self.stable.split("  - name: Bing & Rewards\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(bing_rewards_block, r"proxies:\n\s+- 直连")
         apple_push_block = self.stable.split("  - name: ApplePush\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(apple_push_block, r"proxies:\n\s+- 直连")
 
@@ -147,6 +152,7 @@ class RepositoryTests(unittest.TestCase):
         bootstrap = (ROOT / "config/zashboard-folder-bootstrap.js").read_text(encoding="utf-8")
         self.assertIn("proxyrule-failover", bootstrap)
         self.assertNotIn("首选", bootstrap)
+        self.assertIn("Bing & Rewards", bootstrap)
 
     def test_update_report_has_no_unresolved_alerts(self):
         report = (ROOT / "UPSTREAM_UPDATE_REPORT.md").read_text(encoding="utf-8")

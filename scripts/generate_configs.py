@@ -154,11 +154,12 @@ def groups_block() -> str:
     service_groups = [
         "AI", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
         "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
-        "Amazon", "Crunchyroll", "流媒体", "Spotify", "游戏", "Apple", "Microsoft", "OneDrive",
+        "Amazon", "Crunchyroll", "流媒体", "Spotify", "游戏", "Apple", "Bing & Rewards", "Microsoft", "OneDrive",
         "Google", "办公协作", "Dropbox", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
     ]
     for name in service_groups:
-        lines += group_mapping(name, service_choices)
+        choices = ["直连"] + service_choices if name == "Bing & Rewards" else service_choices
+        lines += group_mapping(name, choices)
     lines += group_mapping("ApplePush", ["直连", "手动选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "拒绝"])
     lines += group_mapping("国内", ["直连", "手动选择", "所有-自动"])
     lines += group_mapping("广告拦截", ["拒绝", "直连", "手动选择"])
@@ -228,7 +229,8 @@ def rules_block() -> str:
         "RULE-SET,openai,AI", "RULE-SET,claude,AI", "RULE-SET,meta-ai,AI", "RULE-SET,perplexity,AI",
         "RULE-SET,copilot,AI", "RULE-SET,gemini,AI", "RULE-SET,groq,AI", "RULE-SET,grok,AI",
         "RULE-SET,github,GitHub",
-        "RULE-SET,gitlab,开发工具", "RULE-SET,docker,开发工具", "RULE-SET,cloudflare,Cloudflare",
+        "RULE-SET,gitlab,开发工具", "RULE-SET,bing,Bing & Rewards", "RULE-SET,microsoft-rewards,Bing & Rewards",
+        "RULE-SET,docker,开发工具", "RULE-SET,cloudflare,Cloudflare",
         "RULE-SET,telegram-domain,Telegram",
         *(f"IP-CIDR,{cidr},Telegram,no-resolve" for cidr in TELEGRAM_OBSERVED_IPS),
         "RULE-SET,telegram-ip,Telegram,no-resolve",
