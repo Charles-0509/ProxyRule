@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-16T02:32:39+00:00",
+  "generated_at": "2026-07-20T06:25:19+00:00",
   "sources": [
     {
       "id": "bank",
@@ -63,8 +63,8 @@
       "runtime_path": "rules/mrs/domain/openai.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "9e54437c916f27b13308a350726d80f1a151e868b30f309ab5ebe67f9399e349",
-      "line_count": 21
+      "sha256": "19d194277b7eccade2b6d65a5a13770e028feea3e39140faaac43bd12d5a34af",
+      "line_count": 22
     },
     {
       "id": "claude",
@@ -191,7 +191,7 @@
       "runtime_path": "rules/mrs/domain/github.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "de2ce2671b1dae65b2a927922721bd396639b34c303db1ff79dedce9aca4c739",
+      "sha256": "54feeaa9fe7b463455d4c7898c39318310ffe71e0265e28d0062644f9fd7e8b9",
       "line_count": 63
     },
     {
@@ -239,7 +239,7 @@
       "runtime_path": "rules/mrs/domain/x.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "d75ae4252e611c14fa34da520c35dfee32f386bd7f00146ee44cea4eec9977b6",
+      "sha256": "515d7b63caba42f65efaa728f58aaba7691a12bdf4d8be770af88894a5d46f7d",
       "line_count": 26
     },
     {
@@ -319,7 +319,7 @@
       "runtime_path": "rules/mrs/domain/amazon.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "674f92c0be79c79f7300441a4820b3ac9343b8b420561c2ec8c215b1f027e9d8",
+      "sha256": "838d7923047c15264bea991eda60183b19799332952e4ebc2b0f494aae7a4c47",
       "line_count": 245
     },
     {
@@ -351,7 +351,7 @@
       "runtime_path": "rules/mrs/domain/apple.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "c92e85a92cf22b2aaadf0eb64ca766a682e0ff206bddd1824ce771b5ae2ca60b",
+      "sha256": "f0bbcd61eb5011a130dc0f3c7d88584d153ecb3686d50deecb926cc0d7be4e1a",
       "line_count": 1790
     },
     {
@@ -416,8 +416,8 @@
       "runtime_path": "rules/mrs/domain/microsoft.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "d5e3766335709802fb5f2ffb0e49e1848f6387d11e8f3df96e8248cc01cf868a",
-      "line_count": 746
+      "sha256": "dadf7ec83ee11b815c304333286b17217e286a28a91256dddab2976ea809b894",
+      "line_count": 748
     },
     {
       "id": "google-domain",
@@ -432,8 +432,8 @@
       "runtime_path": "rules/mrs/domain/google-domain.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "872e3dc1e6120df6f7a61d6b0a392fffd4082740a7b5760053b80cd284c873ca",
-      "line_count": 1069
+      "sha256": "e637adbd6d247bd8f235185a3fdcb203848cfb04c14c3cf64284bf065be55b49",
+      "line_count": 1068
     },
     {
       "id": "google-ip",
@@ -448,8 +448,8 @@
       "runtime_path": "rules/mrs/ipcidr/google-ip.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "f47649753ef68f739b80d47a003558da65cc9686a872fee5d09b601c36ad3fd6",
-      "line_count": 7393
+      "sha256": "34dbe95df53803526f3fdd86444b0f9f1b3ceae7c016a5201c73ec81ae396960",
+      "line_count": 7397
     },
     {
       "id": "okx",
@@ -512,8 +512,8 @@
       "runtime_path": "rules/mrs/domain/bilibili.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "38314c434f9c4d9b17444d47d7c675e2832bb6f926dd009c25ab2c9bd769bd13",
-      "line_count": 52
+      "sha256": "7fb044340e7dcc3ff2d4338dbf7b7725a80fed9ef8ae330b30172ea018ea0a63",
+      "line_count": 53
     },
     {
       "id": "youtube",
@@ -528,7 +528,7 @@
       "runtime_path": "rules/mrs/domain/youtube.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "e52475b78e8c50727fa45b682f68709b74a146719cd662131332c59b6545c245",
+      "sha256": "ec32854438b8ad4e2f2f2ee0d578834c667f1d0cec4c82357e34629452d2fc5d",
       "line_count": 178
     },
     {
@@ -576,8 +576,8 @@
       "runtime_path": "rules/mrs/ipcidr/netflix-ip.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "0820ce84d9db2531d1b2277b688f0b816ae901e08586d725adcf8b6e24f23747",
-      "line_count": 83
+      "sha256": "3a68ea10a864211b336b871a8c3167b0ecddf03759823a3994c782af98c138f0",
+      "line_count": 108
     },
     {
       "id": "disney",
@@ -592,7 +592,7 @@
       "runtime_path": "rules/mrs/domain/disney.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "cdedccd5b9543fd45ce954c5e3cafa9ab315ab8ebc78693b0117e00b56085bca",
+      "sha256": "9772c619590dc454251c4f1df016e5344f0fb8cd5c9f67e22959a963c1ab417b",
       "line_count": 156
     },
     {
@@ -688,7 +688,7 @@
       "runtime_path": "rules/mrs/domain/steam.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "225455da6fa71936dde6c0d67437adc4ab718f9d7088c62837f4268bfa3129aa",
+      "sha256": "6e70aa1b6cebf0a3b849bcba01f99f8351f4a54019a8c0a0142badea33c37d1f",
       "line_count": 60
     },
     {
@@ -736,7 +736,7 @@
       "runtime_path": "rules/source/classical/blizzard.list",
       "license": "GPL-2.0-only",
       "max_size": 5000000,
-      "sha256": "3e20da6c5fa565de52aee7e7729184a42167f2f6b02ad63ae4b8873ba5836983",
+      "sha256": "d8bc67ced6e47b3c8f8434fbe65fc840dbfc94ac0adb8eea2df34a09b297cf12",
       "line_count": 62
     },
     {
@@ -816,8 +816,8 @@
       "runtime_path": "rules/source/classical/global.list",
       "license": "GPL-2.0-only",
       "max_size": 5000000,
-      "sha256": "9f88f94688686307ee2208f41634c88185207ecad82a6bec153106338a8830e0",
-      "line_count": 34809
+      "sha256": "aa3da33c4efeeaec40d58e748958775166075594d4d19e07cc32124b7874850b",
+      "line_count": 34849
     },
     {
       "id": "direct",
@@ -864,8 +864,8 @@
       "runtime_path": "rules/mrs/domain/china-domain.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "eef0105a5e442e336af8c8003ad4dca728b72e7ad3e4e9516d25b89713ad84df",
-      "line_count": 112062
+      "sha256": "740e7bcae884014bc60264a59f7f13d168686242f0232e76497067f6bc59ba2b",
+      "line_count": 111813
     },
     {
       "id": "china-ip",
@@ -880,8 +880,8 @@
       "runtime_path": "rules/mrs/ipcidr/china-ip.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "25b10091184f84689d3969f32c361eea1150af315deb707c2472f31797c024c2",
-      "line_count": 5727
+      "sha256": "bcfb22d9693cab2631bd964862d35ed87d808f5ff772cce5e4c931231a8270b2",
+      "line_count": 5817
     },
     {
       "id": "discord",
@@ -928,8 +928,8 @@
       "runtime_path": "rules/mrs/domain/category-ads-all.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "fb12740ed1f0fa7d65874e67f15e8a0d0a6b974859354fe8c1445c092f69f5f4",
-      "line_count": 900
+      "sha256": "5c52fea0dac13c016b83fb2c6fa031b43bc5f057094ce8feb3afa87f104f069c",
+      "line_count": 904
     },
     {
       "id": "connectivity-check",
@@ -1136,7 +1136,7 @@
       "runtime_path": "rules/mrs/domain/category-scholar-!cn.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "f404225f0244395ad5fc46750705fcf9ae2e480cdf6330db4486ffce7c98aa4f",
+      "sha256": "60f475c677e609a231e6ae187300a36d06f263745d51f43f16e429a34c358f2d",
       "line_count": 475
     },
     {

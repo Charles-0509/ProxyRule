@@ -4,19 +4,20 @@ payload:
     - espndotcom.tt.omtrdc.net
     - +.thisispolaris.com
     - +.bamgrid.com
-    - +.disney.bg
+    - +.disneymagicmoments.pl
     - +.disney.ca
     - +.disney.ch
-    - +.dmed.technology
-    - +.edgedatg.com
-    - +.abc.com
-    - +.abc-studios.com
-    - +.starplus.com
+    - +.watchespn.com
+    - +.espnqa.com
+    - +.espncdn.com
+    - +.espn.net
+    - +.espn.com
+    - +.dtci.technology
     - +.disney.com
-    - +.starott.com
-    - +.ngeo.com
-    - +.nationalgeographicpartners.com
-    - +.nationalgeographic.com
+    - +.dtci.co
+    - +.dmed.technology
+    - +.disneymagicmomentsme.com
+    - +.edgedatg.com
     - +.disney.cz
     - +.disney.de
     - +.disney.dk
@@ -39,23 +40,22 @@ payload:
     - +.disney.ru
     - +.disney.se
     - +.disney.sg
-    - +.natgeomaps.com
-    - +.themarvelexperiencetour.com
+    - +.abc.com
+    - +.abc-studios.com
     - +.20thcenturystudios.jp
     - +.adventuresbydisney.com
     - +.babble.com
     - +.babyzone.com
-    - +.disneymagicmomentsme.com
-    - +.marvelsuperwar.com
+    - +.starplus.com
     - +.dilcdn.com
     - +.disney-asia.com
     - +.disney-discount.com
     - +.disney-plus.net
-    - +.marvelsuperheroseptember.com
+    - +.starott.com
     - +.disney-studio.com
     - +.disney-studio.net
     - +.disneyadsales.com
-    - +.disneymagicmoments.pl
+    - +.disneyarena.com
     - +.disneyaulani.com
     - +.disneybaby.com
     - +.disneycareers.com
@@ -70,34 +70,34 @@ payload:
     - +.disneyjunior.com
     - +.disneyjuniortreataday.com
     - +.disneylatino.com
-    - +.marvelspotlightplays.com
-    - +.marvelsdoubleagent.com
-    - +.marvelpinball.com
+    - +.ngeo.com
+    - +.nationalgeographicpartners.com
+    - +.nationalgeographic.com
     - +.disneymagicmoments.de
     - +.disneymagicmoments.es
     - +.disneymagicmoments.fr
-    - +.marvelparty.net
+    - +.natgeomaps.com
     - +.disneymagicmoments.gr
     - +.disneymagicmoments.it
-    - +.disneyarena.com
+    - +.disney.bg
     - +.disney.be
-    - +.disneysrivieraresort.com
+    - +.watchdisneyfe.com
     - +.disneymeetingsandevents.com
     - +.disneymovieinsiders.com
     - +.disneymusicpromotion.com
     - +.disneynewseries.com
     - +.disneynow.com
     - +.disneypeoplesurveys.com
-    - +.marveldimensionofheroes.com
+    - +.themarvelexperiencetour.com
     - +.disneyplus.com
-    - +.marvel10thanniversary.com
+    - +.marvelsuperwar.com
     - +.disneyredirects.com
-    - +.disneyme.com
+    - +.disneysrivieraresort.com
     - +.disneystore.com
     - +.disneystreaming.com
     - +.disneysubscription.com
-    - +.marvel.com
-    - +.hotstarext.com
+    - +.marvelsuperheroseptember.com
+    - +.marvelspotlightplays.com
     - +.disneytvajobs.com
     - +.disneyworld-go.com
     - +.dssott.com
@@ -119,39 +119,39 @@ payload:
     - +.streamingdisney.net
     - +.thestationbymaker.com
     - +.disney.asia
-    - +.watchdisneyfe.com
-    - +.dtci.co
-    - +.dtci.technology
-    - +.espn.com
-    - +.espn.net
-    - +.espncdn.com
-    - +.espnqa.com
-    - +.watchespn.com
-    - +.hotstar-labs.com
+    - +.disneyme.com
     - +.hotstar.com
     - +.hotstar-cdn.net
+    - +.hotstar-labs.com
+    - +.hotstarext.com
+    - +.marvelsdoubleagent.com
+    - +.marvel.com
+    - +.marvel10thanniversary.com
+    - +.marveldimensionofheroes.com
+    - +.marvelparty.net
+    - +.marvelpinball.com
+    - +.disney.com.hk
+    - +.disney.co.th
     - +.disneytickets.co.uk
-    - +.disney.co.kr
-    - +.hsprepack.akamaized.net
-    - +.disney.com.tw
+    - +.espn.co.uk
     - +.20thcenturystudios.com.br
-    - +.disneyplus.bn5x.net
     - +.disneymagicmoments.gen.tr
     - +.disneymagicmoments.co.za
     - +.disneymagicmoments.co.uk
     - +.disneymagicmoments.co.il
-    - +.disney.com.hk
-    - +.beautyandthebeastmusical.co.uk
     - +.disney.co.il
-    - +.20thcenturystudios.com.au
-    - +.disney.co.za
+    - +.beautyandthebeastmusical.co.uk
     - +.disney.co.jp
+    - +.disneyturkiye.com.tr
+    - +.disney.co.kr
+    - +.disneyplus.bn5x.net
+    - +.hsprepack.akamaized.net
+    - +.20thcenturystudios.com.au
+    - +.disney.com.tw
+    - +.disney.co.uk
     - +.disney.com.br
     - +.disney.com.au
-    - +.espn.co.uk
-    - +.disneyturkiye.com.tr
-    - +.disney.co.th
-    - +.disney.co.uk
+    - +.disney.co.za
     - +.disney-portal.my.onetrust.com
     - +.disneyplus.com.ssl.sc.omtrdc.net
     - disney.my.sentry.io
