@@ -1,0 +1,31 @@
+# Steam store, community, chat, account and connection services.
+# Curated from v2fly/domain-list-community and MetaCubeX/meta-rules-dat.
+# Download-only hosts are intentionally kept in steam-download.yaml.
+payload:
+  - +.playartifact.com
+  - +.s.team
+  - +.steam.tv
+  - +.steam-api.com
+  - +.steam-chat.com
+  - +.steamcommunity.com
+  - +.steamconnecttest.com
+  - +.steamdeck.com
+  - +.steamgames.com
+  - +.steampowered.com
+  - +.steamserver.net
+  - +.steamstatic.com
+  - +.steamusercontent.com
+  - +.underlords.com
+  - +.valve.net
+  - +.valvesoftware.com
+  - +.dota2.com
+  - steamcommunity-a.akamaihd.net.edgesuite.net
+  - steambroadcast.akamaized.net
+  - steamcommunity-a.akamaihd.net
+  - steammobile.akamaized.net
+  - steamstore-a.akamaihd.net
+  - steamusercontent-a.akamaihd.net
+  - steamuserimages-a.akamaihd.net
+  - steamvideo-a.akamaihd.net
+  - steamcloudsweden.blob.core.windows.net
+  - steamugcquincy.blob.core.windows.net

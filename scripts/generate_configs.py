@@ -154,11 +154,11 @@ def groups_block() -> str:
     service_groups = [
         "AI", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
         "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
-        "Amazon", "Crunchyroll", "流媒体", "Spotify", "游戏", "Apple", "Bing & Rewards", "Microsoft", "OneDrive",
+        "Amazon", "Crunchyroll", "流媒体", "Spotify", "Steam社区", "Steam下载", "游戏", "Apple", "Bing & Rewards", "Microsoft", "OneDrive",
         "Google", "办公协作", "Dropbox", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
     ]
     for name in service_groups:
-        choices = ["直连"] + service_choices if name == "Bing & Rewards" else service_choices
+        choices = ["直连"] + service_choices if name in {"Bing & Rewards", "Steam下载"} else service_choices
         lines += group_mapping(name, choices)
     lines += group_mapping("ApplePush", ["直连", "手动选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "拒绝"])
     lines += group_mapping("国内", ["直连", "手动选择", "所有-自动"])
@@ -246,7 +246,11 @@ def rules_block() -> str:
         "RULE-SET,netflix-domain,Netflix", "RULE-SET,netflix-ip,Netflix,no-resolve", "RULE-SET,disney,Disney+",
         "RULE-SET,amazon,Amazon", "RULE-SET,crunchyroll,Crunchyroll", "RULE-SET,popcorn,流媒体", "RULE-SET,hbo,HBO",
         "RULE-SET,spotify,Spotify",
-        "RULE-SET,nvidia,游戏", "RULE-SET,steam,游戏", "RULE-SET,epic,游戏", "RULE-SET,ea,游戏",
+        # Store/community/chat/CM traffic must win before the overlapping CDN IP
+        # ranges. The latter are only a fallback for pure-IP download flows.
+        "RULE-SET,steam-community,Steam社区", "RULE-SET,steam-download,Steam下载",
+        "RULE-SET,steam-download-ip,Steam下载,no-resolve",
+        "RULE-SET,nvidia,游戏", "RULE-SET,epic,游戏", "RULE-SET,ea,游戏",
         "RULE-SET,blizzard,游戏", "RULE-SET,ubi,游戏", "RULE-SET,playstation,游戏", "RULE-SET,nintendo,游戏",
         "RULE-SET,direct,国内", "RULE-SET,china-domain,国内", "RULE-SET,china-ip,国内,no-resolve",
         "RULE-SET,proxy,国外", "RULE-SET,global,国外", "MATCH,其他",

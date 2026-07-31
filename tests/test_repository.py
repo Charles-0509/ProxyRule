@@ -32,7 +32,7 @@ class RepositoryTests(unittest.TestCase):
 
     def test_manifest_ids_and_paths_are_unique(self):
         sources = self.manifest["sources"]
-        self.assertEqual(73, len(sources))
+        self.assertEqual(75, len(sources))
         for key in ["id", "source_path", "runtime_path"]:
             values = [item[key] for item in sources]
             if key == "runtime_path":
@@ -88,6 +88,9 @@ class RepositoryTests(unittest.TestCase):
             "RULE-SET,notion,办公协作",
             "RULE-SET,category-scholar-!cn,学术",
             "RULE-SET,bilibili,国内",
+            "RULE-SET,steam-community,Steam社区",
+            "RULE-SET,steam-download,Steam下载",
+            "RULE-SET,steam-download-ip,Steam下载,no-resolve",
             "RULE-SET,china-domain,国内",
             "RULE-SET,proxy,国外",
             "MATCH,其他",
@@ -101,10 +104,18 @@ class RepositoryTests(unittest.TestCase):
             "rules/source/domain/bilibili.yaml": ("bilibili.com",),
             "rules/source/domain/apple-push.yaml": ("push.apple.com",),
             "rules/source/domain/microsoft-rewards.yaml": ("rewards.microsoft.com", "login.live.com"),
+            "rules/source/domain/steam-community.yaml": ("steamcommunity.com", "steamserver.net"),
+            "rules/source/domain/steam-download.yaml": ("steamcontent.com", "dl.steam.clngaa.com"),
+            "rules/source/ipcidr/steam-download-ip.yaml": ("103.10.124.0/23",),
         }
         for path, needles in checks.items():
             content = (ROOT / path).read_text(encoding="utf-8")
             self.assertTrue(any(needle in content for needle in needles), path)
+        community = (ROOT / "rules/source/domain/steam-community.yaml").read_text(encoding="utf-8")
+        download = (ROOT / "rules/source/domain/steam-download.yaml").read_text(encoding="utf-8")
+        self.assertNotIn("steamcontent.com", community)
+        self.assertNotIn("\n  - +.steamserver.net", download)
+        self.assertNotIn("\n  - +.cm.steampowered.com", download)
 
     def test_region_filters_do_not_misclassify_common_samples(self):
         samples = {
@@ -137,6 +148,11 @@ class RepositoryTests(unittest.TestCase):
         self.assertRegex(ai_block, r"proxies:\n\s+- 手动选择")
         bing_rewards_block = self.stable.split("  - name: Bing & Rewards\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(bing_rewards_block, r"proxies:\n\s+- 直连")
+        steam_community_block = self.stable.split("  - name: Steam社区\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(steam_community_block, r"proxies:\n\s+- 手动选择")
+        steam_download_block = self.stable.split("  - name: Steam下载\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(steam_download_block, r"proxies:\n\s+- 直连")
+        self.assertNotIn("RULE-SET,steam,游戏", self.stable)
         apple_push_block = self.stable.split("  - name: ApplePush\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(apple_push_block, r"proxies:\n\s+- 直连")
 
@@ -153,6 +169,9 @@ class RepositoryTests(unittest.TestCase):
         self.assertIn("proxyrule-failover", bootstrap)
         self.assertNotIn("首选", bootstrap)
         self.assertIn("Bing & Rewards", bootstrap)
+        for name in ["Bing & Rewards", "Steam社区", "Steam下载"]:
+            self.assertIn(name, folders[0]["manualIncludes"])
+            self.assertIn(name, bootstrap)
 
     def test_update_report_has_no_unresolved_alerts(self):
         report = (ROOT / "UPSTREAM_UPDATE_REPORT.md").read_text(encoding="utf-8")

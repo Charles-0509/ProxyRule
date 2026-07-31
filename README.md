@@ -28,6 +28,14 @@
 - `Bing & Rewards`：Bing 搜索与 Microsoft Rewards 的独立策略组，默认直连；它只包含
   Bing、Rewards 页面及其登录所需域名，不改变 Windows、Office、OneDrive 等其他 Microsoft
   服务的既有分流。若 Rewards 的地区或登录页需要其他出口，可在 Zashboard 手动切换该组。
+- `Steam社区`：Steam 商店、社区、好友、聊天、账户及连接管理流量，默认走“手动选择”。
+  其中包括 `steampowered.com`、`steamcommunity.com`、`steam-chat.com` 和
+  `steamserver.net` 等在中国大陆可能被阻断或污染的域名。
+- `Steam下载`：游戏内容与中国大陆下载 CDN，默认直连，包括 `steamcontent.com`、
+  `dl.steam.clngaa.com`、`st.dl.bscstorage.net` 等域名及单独维护的 CDN IPv4 网段。
+  社区规则排在下载域名和下载 IP 规则之前，避免登录、好友连接被共享 Valve 网段误导向直连。
+  社区侧没有加入宽泛静态 IP 段，因为 Steam CM 主机和下载 CDN 会共享或动态变更地址；
+  在 Fake-IP、域名嗅探和规则优先级配合下，按域名分流更稳妥。
 - `*.edu.cn` 和 `*.zfye.site`：无条件直连，优先级高于广告和代理规则。
 - 广告规则：拒绝，可在“广告拦截”组临时切换为直连排查误杀。
 - AI、GitHub、Telegram、社交、流媒体、游戏等：使用各自策略组。

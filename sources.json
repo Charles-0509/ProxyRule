@@ -676,20 +676,67 @@
       "line_count": 62
     },
     {
-      "id": "steam",
-      "display_name": "Steam / Domain",
-      "upstream_repo": "MetaCubeX/meta-rules-dat",
-      "upstream_ref": "meta",
-      "source_url": "https://raw.githubusercontent.com/MetaCubeX/meta-rules-dat/meta/geo/geosite/steam.yaml",
+      "id": "steam-community",
+      "display_name": "Steam Community / Domain",
+      "upstream_repo": "Charles-0509/ProxyRule",
+      "upstream_ref": "main",
+      "source_url": null,
+      "local": true,
+      "upstream_sources": [
+        "https://github.com/v2fly/domain-list-community/blob/master/data/steam",
+        "https://github.com/MetaCubeX/meta-rules-dat/blob/meta/geo/geosite/steam.yaml"
+      ],
       "behavior": "domain",
       "source_format": "yaml",
-      "source_path": "rules/source/domain/steam.yaml",
+      "source_path": "rules/source/domain/steam-community.yaml",
       "runtime_format": "mrs",
-      "runtime_path": "rules/mrs/domain/steam.mrs",
+      "runtime_path": "rules/mrs/domain/steam-community.mrs",
       "license": "GPL-3.0-only",
-      "max_size": 8000000,
-      "sha256": "225455da6fa71936dde6c0d67437adc4ab718f9d7088c62837f4268bfa3129aa",
-      "line_count": 60
+      "max_size": 100000,
+      "sha256": "9a36d178d1edfed1668d9a3bddfa98608a7abc8c04a845f4682c5553e8effa89",
+      "line_count": 27
+    },
+    {
+      "id": "steam-download",
+      "display_name": "Steam Download / Domain",
+      "upstream_repo": "Charles-0509/ProxyRule",
+      "upstream_ref": "main",
+      "source_url": null,
+      "local": true,
+      "upstream_sources": [
+        "https://github.com/v2fly/domain-list-community/blob/master/data/steam",
+        "https://github.com/ACL4SSR/ACL4SSR/blob/master/Clash/Ruleset/SteamCN.list",
+        "https://github.com/heunghingwan/Aethersailor-Custom_OpenClash_Rules/blob/main/rule/Steam_CDN.list"
+      ],
+      "behavior": "domain",
+      "source_format": "yaml",
+      "source_path": "rules/source/domain/steam-download.yaml",
+      "runtime_format": "mrs",
+      "runtime_path": "rules/mrs/domain/steam-download.mrs",
+      "license": "CC-BY-SA-4.0",
+      "max_size": 100000,
+      "sha256": "1f449c5988f8b5b858946442690d41fa34e3a401e6f8f5e0cf2418c0e8fce2ad",
+      "line_count": 24
+    },
+    {
+      "id": "steam-download-ip",
+      "display_name": "Steam Download CDN / IPv4",
+      "upstream_repo": "Charles-0509/ProxyRule",
+      "upstream_ref": "main",
+      "source_url": null,
+      "local": true,
+      "upstream_sources": [
+        "https://github.com/heunghingwan/Aethersailor-Custom_OpenClash_Rules/blob/main/rule/Steam_CDN.list"
+      ],
+      "behavior": "ipcidr",
+      "source_format": "yaml",
+      "source_path": "rules/source/ipcidr/steam-download-ip.yaml",
+      "runtime_format": "mrs",
+      "runtime_path": "rules/mrs/ipcidr/steam-download-ip.mrs",
+      "license": "CC-BY-SA-4.0",
+      "max_size": 100000,
+      "sha256": "eb6522ece092889e817d04ebf01cad0d2cd2215eca701f0b30ae365a3d5c5556",
+      "line_count": 23
     },
     {
       "id": "epic",

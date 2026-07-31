@@ -10,9 +10,13 @@
 | `blackmatrix7/ios_rule_script` | classical 文本规则 | GPL-2.0-only |
 | `liandu2024/clash` | classical 文本规则 | NOASSERTION |
 | `pathfinder-yu/ProxyRule` | 银行规则 | NOASSERTION |
+| `v2fly/domain-list-community` | Steam 域名分类参考 | MIT |
+| `ACL4SSR/ACL4SSR` | Steam 中国大陆 CDN 域名参考 | CC-BY-SA-4.0 |
+| `heunghingwan/Aethersailor-Custom_OpenClash_Rules` | Steam 下载 CDN IPv4 网段 | CC-BY-SA-4.0 |
 
 GPL 全文保存在 `LICENSES/`。许可证未知文件的说明见
-`LICENSES/NOASSERTION.md`。本仓库没有把许可证未知内容重新许可为 MIT。
+`LICENSES/NOASSERTION.md`，CC-BY-SA-4.0 的许可链接与改编说明见
+`LICENSES/CC-BY-SA-4.0.md`。本仓库没有把第三方内容重新许可为 MIT。
 
 同步过程保存规范化后的上游数据以及 SHA-256，并不执行上游文件。自动
 更新 PR 仍需要维护者逐项审核，技术审计不能替代版权授权。
