@@ -150,8 +150,8 @@ def groups_block() -> str:
         lines += [f"    url: {TEST_URL}", "    interval: 300", "    lazy: true"]
     fallbacks = [f"{name}-故转" for name in region_names]
     lines += group_mapping("手动选择", ["美国-故转", "香港-故转", "台湾-故转", "日本-故转", "新加坡-故转", "韩国-故转", "英国-故转", "其他地区-故转", "所有-故转", "Azure"])
-    lines += group_mapping("规则更新", ["手动选择", "所有-故转", "所有-自动", "直连"])
-    service_choices = ["手动选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "直连", "拒绝"]
+    lines += group_mapping("规则更新", ["手动选择", "所有-故转", "所有-自动", "Azure", "直连"])
+    service_choices = ["手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "直连", "拒绝"]
     service_groups = [
         "AI", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
         "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
@@ -161,9 +161,9 @@ def groups_block() -> str:
     for name in service_groups:
         choices = ["直连"] + service_choices if name in {"Bing & Rewards", "Steam下载"} else service_choices
         lines += group_mapping(name, choices)
-    lines += group_mapping("ApplePush", ["直连", "手动选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "拒绝"])
-    lines += group_mapping("国内", ["直连", "手动选择", "所有-自动"])
-    lines += group_mapping("广告拦截", ["拒绝", "直连", "手动选择"])
+    lines += group_mapping("ApplePush", ["直连", "手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "拒绝"])
+    lines += group_mapping("国内", ["直连", "手动选择", "Azure", "所有-自动"])
+    lines += group_mapping("广告拦截", ["拒绝", "直连", "手动选择", "Azure"])
     return "\n".join(lines)
 
 

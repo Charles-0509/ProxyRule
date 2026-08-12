@@ -149,6 +149,7 @@ class RepositoryTests(unittest.TestCase):
         self.assertRegex(us_fallback, r"proxies:\n\s+- 美国-手动\n\s+- 美国-自动\n\s+- 所有-自动")
         ai_block = self.stable.split("  - name: AI\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(ai_block, r"proxies:\n\s+- 手动选择")
+        self.assertRegex(ai_block, r"\n\s+- Azure\n")
         bing_rewards_block = self.stable.split("  - name: Bing & Rewards\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(bing_rewards_block, r"proxies:\n\s+- 直连")
         steam_community_block = self.stable.split("  - name: Steam社区\n", 1)[1].split("  - name:", 1)[0]
@@ -158,6 +159,9 @@ class RepositoryTests(unittest.TestCase):
         self.assertNotIn("RULE-SET,steam,游戏", self.stable)
         apple_push_block = self.stable.split("  - name: ApplePush\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(apple_push_block, r"proxies:\n\s+- 直连")
+        for name in ["规则更新", "国内", "广告拦截"]:
+            block = self.stable.split(f"  - name: {name}\n", 1)[1].split("  - name:", 1)[0]
+            self.assertRegex(block, r"\n\s+- Azure\n")
 
     def test_zashboard_folder_profile(self):
         settings = json.loads((ROOT / "config/zashboard-settings.json").read_text(encoding="utf-8"))
