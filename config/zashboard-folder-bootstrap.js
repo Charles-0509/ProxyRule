@@ -1,5 +1,5 @@
 (() => {
-  const version = '2026-07-19-v5'
+  const version = '2026-08-13-v6'
   const versionKey = 'proxyrule/folder-layout-version'
   if (localStorage.getItem(versionKey) === version) return
 
@@ -37,7 +37,7 @@
         name: '节点组',
         order: 2,
         rules: [{ type: 'auto', value: 'nodeOnly' }],
-        manualIncludes: [],
+        manualIncludes: ['Azure'],
       },
     ],
     activeId: '__all__',

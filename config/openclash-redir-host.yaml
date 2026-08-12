@@ -142,6 +142,10 @@ proxy-groups:
     interval: 300
     tolerance: 50
     lazy: true
+  - name: Azure
+    type: select
+    include-all: true
+    filter: '(?i)Azure'
   - name: 香港-手动
     type: select
     include-all: true
@@ -330,6 +334,7 @@ proxy-groups:
       - 英国-故转
       - 其他地区-故转
       - 所有-故转
+      - Azure
   - name: 规则更新
     type: select
     proxies:

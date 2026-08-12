@@ -133,6 +133,8 @@ class RepositoryTests(unittest.TestCase):
         self.assertIsNone(compiled["美国"].search("RUS Russia"))
 
     def test_fallback_groups_and_proxy_defaults(self):
+        azure_block = self.stable.split("  - name: Azure\n", 1)[1].split("  - name:", 1)[0]
+        self.assertRegex(azure_block, r"type: select\n\s+include-all: true\n\s+filter: '\(\?i\)Azure'")
         self.assertIn("- name: 所有-故转", self.stable)
         for region, _ in GENERATOR.REGIONS:
             self.assertIn(f"- name: {region}-自动", self.stable)
@@ -142,6 +144,7 @@ class RepositoryTests(unittest.TestCase):
         self.assertNotIn("- name: 所有-首选", self.stable)
         manual_failover = self.stable.split("  - name: 手动选择\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(manual_failover, r"proxies:\n\s+- 美国-故转")
+        self.assertRegex(manual_failover, r"\n\s+- Azure$")
         us_fallback = self.stable.split("  - name: 美国-故转\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(us_fallback, r"proxies:\n\s+- 美国-手动\n\s+- 美国-自动\n\s+- 所有-自动")
         ai_block = self.stable.split("  - name: AI\n", 1)[1].split("  - name:", 1)[0]
@@ -165,8 +168,11 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual("手动选择", folders[0]["manualIncludes"][0])
         self.assertNotIn("节点选择", folders[0]["manualIncludes"])
         self.assertTrue(folders[1]["rules"][0]["pattern"].endswith("-故转$"))
+        self.assertEqual(["Azure"], folders[2]["manualIncludes"])
         bootstrap = (ROOT / "config/zashboard-folder-bootstrap.js").read_text(encoding="utf-8")
         self.assertIn("proxyrule-failover", bootstrap)
+        self.assertIn("2026-08-13-v6", bootstrap)
+        self.assertIn("manualIncludes: ['Azure']", bootstrap)
         self.assertNotIn("首选", bootstrap)
         self.assertIn("Bing & Rewards", bootstrap)
         for name in ["Bing & Rewards", "Steam社区", "Steam下载"]:

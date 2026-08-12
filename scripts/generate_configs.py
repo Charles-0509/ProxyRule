@@ -70,7 +70,7 @@ def provider_block(manifest: dict, ref: str, local_rules: bool) -> str:
 def subscription_block(test_mode: bool) -> str:
     if test_mode:
         nodes = [
-            "香港测试", "台湾测试", "日本测试", "新加坡测试", "韩国测试", "美国测试", "英国测试", "法国测试"
+            "香港测试", "台湾测试", "日本测试", "新加坡测试", "韩国测试", "美国测试", "英国测试", "Azure 测试", "法国测试"
         ]
         proxy_lines = ["proxy-providers: {}", "", "proxies:", "  - { name: 直连, type: direct, udp: true }", "  - { name: 拒绝, type: reject }"]
         proxy_lines += [
@@ -126,6 +126,7 @@ def groups_block() -> str:
         "  - name: 所有-手动", "    type: select", "    include-all: true", f"    filter: {q(all_filter)}",
         "  - name: 所有-自动", "    type: url-test", "    include-all: true", f"    filter: {q(all_filter)}",
         f"    url: {TEST_URL}", "    interval: 300", "    tolerance: 50", "    lazy: true",
+        "  - name: Azure", "    type: select", "    include-all: true", f"    filter: {q(r'(?i)Azure')}",
     ]
     for name, regex in REGIONS:
         lines += [
@@ -148,7 +149,7 @@ def groups_block() -> str:
         ]
         lines += [f"    url: {TEST_URL}", "    interval: 300", "    lazy: true"]
     fallbacks = [f"{name}-故转" for name in region_names]
-    lines += group_mapping("手动选择", ["美国-故转", "香港-故转", "台湾-故转", "日本-故转", "新加坡-故转", "韩国-故转", "英国-故转", "其他地区-故转", "所有-故转"])
+    lines += group_mapping("手动选择", ["美国-故转", "香港-故转", "台湾-故转", "日本-故转", "新加坡-故转", "韩国-故转", "英国-故转", "其他地区-故转", "所有-故转", "Azure"])
     lines += group_mapping("规则更新", ["手动选择", "所有-故转", "所有-自动", "直连"])
     service_choices = ["手动选择", "所有-故转"] + fallbacks + ["所有-手动", "所有-自动", "直连", "拒绝"]
     service_groups = [
