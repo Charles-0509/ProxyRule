@@ -159,9 +159,12 @@ class RepositoryTests(unittest.TestCase):
         self.assertNotIn("RULE-SET,steam,游戏", self.stable)
         apple_push_block = self.stable.split("  - name: ApplePush\n", 1)[1].split("  - name:", 1)[0]
         self.assertRegex(apple_push_block, r"proxies:\n\s+- 直连")
-        for name in ["规则更新", "国内", "广告拦截"]:
+        for name in ["规则更新", "ApplePush"]:
             block = self.stable.split(f"  - name: {name}\n", 1)[1].split("  - name:", 1)[0]
             self.assertRegex(block, r"\n\s+- Azure\n")
+        for name in ["国内", "广告拦截"]:
+            block = self.stable.split(f"  - name: {name}\n", 1)[1].split("  - name:", 1)[0]
+            self.assertNotIn("Azure", block)
 
     def test_zashboard_folder_profile(self):
         settings = json.loads((ROOT / "config/zashboard-settings.json").read_text(encoding="utf-8"))

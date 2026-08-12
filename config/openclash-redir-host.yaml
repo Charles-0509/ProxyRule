@@ -1032,7 +1032,6 @@ proxy-groups:
     proxies:
       - 直连
       - 手动选择
-      - Azure
       - 所有-自动
   - name: 广告拦截
     type: select
@@ -1040,7 +1039,6 @@ proxy-groups:
       - 拒绝
       - 直连
       - 手动选择
-      - Azure
 
 rules:
   - DOMAIN-SUFFIX,lan,国内

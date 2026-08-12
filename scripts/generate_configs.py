@@ -162,8 +162,8 @@ def groups_block() -> str:
         choices = ["直连"] + service_choices if name in {"Bing & Rewards", "Steam下载"} else service_choices
         lines += group_mapping(name, choices)
     lines += group_mapping("ApplePush", ["直连", "手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "拒绝"])
-    lines += group_mapping("国内", ["直连", "手动选择", "Azure", "所有-自动"])
-    lines += group_mapping("广告拦截", ["拒绝", "直连", "手动选择", "Azure"])
+    lines += group_mapping("国内", ["直连", "手动选择", "所有-自动"])
+    lines += group_mapping("广告拦截", ["拒绝", "直连", "手动选择"])
     return "\n".join(lines)
 
 
