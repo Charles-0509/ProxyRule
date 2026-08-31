@@ -17,8 +17,8 @@ payload:
     - +.kindle
     - +.imdb
     - +.aws
-    - +.amazonprimevideos.com
-    - +.amazonlaunchpad.com
+    - +.amazonvideo.com
+    - +.aiv-cdn.net
     - +.aboutamazon.fr
     - +.aboutamazon.in
     - +.aboutamazon.it
@@ -38,14 +38,14 @@ payload:
     - +.kindleoasis.us
     - +.kindleoasis.org
     - +.kindleoasis.jp
-    - +.primevideo.info
     - +.kindleoasis.info
-    - +.kindleoasis.com
-    - +.kindle.es
     - +.kindleoasisnews.com
-    - +.primevideo.cc
-    - +.kindle.fr
     - +.kindle.jp
+    - +.kindle.in
+    - +.kindleproject.com
+    - +.kindle.fr
+    - +.kindle.es
+    - +.kindle.de
     - +.amazon.dev
     - +.amazon.eg
     - +.amazon.es
@@ -70,7 +70,7 @@ payload:
     - +.amazonfctours.com
     - +.amazonianblog.com
     - +.amazonimages.com
-    - +.primevideo.com
+    - +.amazonlaunchpad.com
     - +.amazonliterarypartnership.com
     - +.amazonlumberyard.wang
     - +.amazonpay.com
@@ -81,7 +81,7 @@ payload:
     - +.amzn.asia
     - +.amzn.com
     - +.amzn.to
-    - +.amznl.com
+    - +.primevideo.tv
     - +.associates-amazon.com
     - +.gameon-masters.com
     - +.gdansk-amazon.com
@@ -96,18 +96,18 @@ payload:
     - +.alexa.com
     - +.audible.com
     - +.createspace.com
-    - +.aiv-cdn.net
-    - +.aboutamazon.es
-    - +.amazonvideo.cc
-    - +.amazonvideo.com
-    - +.prime-video.com
-    - +.kindleproject.com
-    - +.aboutamazon.eu
-    - +.kindle.de
     - +.primevideo.org
-    - +.primevideo.tv
+    - +.amazonprimevideos.com
+    - +.amazonvideo.cc
+    - +.aboutamazon.es
+    - +.prime-video.com
+    - +.primevideo.cc
+    - +.primevideo.com
+    - +.amznl.com
+    - +.aboutamazon.eu
+    - +.primevideo.info
     - +.kindle.com
-    - +.kindle.in
+    - +.kindleoasis.com
     - +.wfm.com
     - +.wholecitiesfoundation.org
     - +.wholefoods.com
@@ -120,11 +120,10 @@ payload:
     - +.ss2.us
     - +.aboutamazon.de
     - +.awsbraket.com
-    - +.elasticbeanstalk.com
+    - +.thinkboxsoftware.com
     - +.aesworkshops.com
     - +.amazonaws-china.com
     - +.amazonaws.biz
-    - +.amzndns.org
     - +.amazonaws.com
     - +.amazonaws.info
     - +.amazonaws.net
@@ -132,6 +131,7 @@ payload:
     - +.amazonaws.tv
     - +.amazoncognito.com
     - +.amazonses.com
+    - +.amazonwebservices.com
     - +.amazonworkdocs.com
     - +.amplifyapp.com
     - +.amplifyframework.com
@@ -141,12 +141,12 @@ payload:
     - +.awsapprunner.com
     - +.awsapps.com
     - +.awsautopilot.com
-    - +.amzndns.net
+    - +.awsautoscaling.com
+    - +.acmvalidations.com
     - +.acmvalidationsaws.com
-    - +.awseducate.net
-    - +.awsedstart.com
-    - +.awseducate.com
     - +.awscommandlineinterface.com
+    - +.awseducate.com
+    - +.awseducate.net
     - +.awseducate.org
     - +.awsglobalaccelerator.com
     - +.awsloft-johannesburg.com
@@ -160,30 +160,31 @@ payload:
     - +.cloudfront.com
     - +.cloudfront.net
     - +.containersonaws.com
-    - +.acmvalidations.com
-    - +.thinkboxsoftware.com
-    - +.awsautoscaling.com
+    - +.elasticbeanstalk.com
+    - +.awsedstart.com
     - +.amzndns.com
+    - +.amzndns.org
+    - +.amzndns.net
     - +.a2z.com
     - +.media-imdb.com
+    - +.imdb.to
+    - +.imdb.com
     - +.aboutamazon.com
     - +.boxofficemojo.com
-    - +.imdb.com
-    - +.imdb.to
-    - +.kindle.co.uk
+    - +.amazon.co.jp
+    - +.amazon.co.za
     - +.wholefoodsmarket.co.uk
-    - +.amazon.com.be
-    - +.amazon.com.br
+    - +.kindle.co.uk
     - +.amazon.com.tr
-    - +.amazon.co.uk
     - +.amazon.com.ng
     - +.amzndns.co.uk
-    - +.amazon.com.co
-    - +.amazon.com.mx
     - +.amazonaws.co.uk
     - +.amazon.com.au
-    - +.amazon.co.za
-    - +.amazon.co.jp
+    - +.amazon.com.co
+    - +.amazon.com.br
+    - +.amazon.com.mx
+    - +.amazon.co.uk
+    - +.amazon.com.be
     - +.aboutamazon.com.au
     - +.aboutamazon.co.uk
     - +.kindle.co.jp

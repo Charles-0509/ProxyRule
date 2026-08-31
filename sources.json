@@ -1,6 +1,6 @@
 {
   "schema_version": 1,
-  "generated_at": "2026-07-16T02:32:39+00:00",
+  "generated_at": "2026-08-31T09:42:39+00:00",
   "sources": [
     {
       "id": "bank",
@@ -63,8 +63,8 @@
       "runtime_path": "rules/mrs/domain/openai.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "9e54437c916f27b13308a350726d80f1a151e868b30f309ab5ebe67f9399e349",
-      "line_count": 21
+      "sha256": "19d194277b7eccade2b6d65a5a13770e028feea3e39140faaac43bd12d5a34af",
+      "line_count": 22
     },
     {
       "id": "claude",
@@ -191,8 +191,8 @@
       "runtime_path": "rules/mrs/domain/github.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "de2ce2671b1dae65b2a927922721bd396639b34c303db1ff79dedce9aca4c739",
-      "line_count": 63
+      "sha256": "e1c015908fae8789afb5adc395e8bbf6acb3868a48462968431eeefda0c8ca26",
+      "line_count": 64
     },
     {
       "id": "telegram-domain",
@@ -239,8 +239,8 @@
       "runtime_path": "rules/mrs/domain/x.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "d75ae4252e611c14fa34da520c35dfee32f386bd7f00146ee44cea4eec9977b6",
-      "line_count": 26
+      "sha256": "e1b7735ec2afceb4d084c0725fc4f20a0f820768c48283a7ffafc079c8d8b9e5",
+      "line_count": 27
     },
     {
       "id": "whatsapp",
@@ -271,8 +271,8 @@
       "runtime_path": "rules/mrs/domain/facebook.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "1bd62dd757a15f2403cce6d4c796bfb7d3d285a1b2914738c5c92a5b1af13f94",
-      "line_count": 397
+      "sha256": "f4bc4d117521868b8f6c6547b0c10bda70c294e4f2455035ac1e4754b190389a",
+      "line_count": 396
     },
     {
       "id": "instagram",
@@ -319,8 +319,8 @@
       "runtime_path": "rules/mrs/domain/amazon.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "674f92c0be79c79f7300441a4820b3ac9343b8b420561c2ec8c215b1f027e9d8",
-      "line_count": 245
+      "sha256": "019a5004d9d2658a50fc3ce2a5577ea269ec3f73539d163c7f9435bf353b209d",
+      "line_count": 246
     },
     {
       "id": "apple-cn",
@@ -335,8 +335,8 @@
       "runtime_path": "rules/mrs/domain/apple-cn.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "29ab51231d36abd2428a9fc6357955c1a30a2a5701f426dc534a9250a5f5c546",
-      "line_count": 164
+      "sha256": "97a0f9d9d843280516f88ee6473cf76c50ffd4c819680b9512b1de9d0335d928",
+      "line_count": 165
     },
     {
       "id": "apple",
@@ -351,8 +351,8 @@
       "runtime_path": "rules/mrs/domain/apple.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "c92e85a92cf22b2aaadf0eb64ca766a682e0ff206bddd1824ce771b5ae2ca60b",
-      "line_count": 1790
+      "sha256": "d59fa9ff98d77fbf56b68aff1c3be6a77d5a76492f4b1e5e204fec36799c2222",
+      "line_count": 1792
     },
     {
       "id": "apple-custom",
@@ -383,8 +383,8 @@
       "runtime_path": "rules/mrs/domain/bing.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "d2a0f9a41e3b786737a1efc84ffc4c77b73de09c24ab0ed52fe5cb2353e5cd2d",
-      "line_count": 41
+      "sha256": "76e566bc13d276792ece9005cf4f4dd450c1ba892752980ac37c7e78773c30ab",
+      "line_count": 40
     },
     {
       "id": "microsoft-rewards",
@@ -416,8 +416,8 @@
       "runtime_path": "rules/mrs/domain/microsoft.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "d5e3766335709802fb5f2ffb0e49e1848f6387d11e8f3df96e8248cc01cf868a",
-      "line_count": 746
+      "sha256": "a085037143f248e2abdba1159798895acf6b2f1617cd5190c903d1cb631c70d9",
+      "line_count": 748
     },
     {
       "id": "google-domain",
@@ -432,8 +432,8 @@
       "runtime_path": "rules/mrs/domain/google-domain.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "872e3dc1e6120df6f7a61d6b0a392fffd4082740a7b5760053b80cd284c873ca",
-      "line_count": 1069
+      "sha256": "f639665a2c0268fcbdeda86a88d32b57db7390272e925aad9cc5f35e4cc2d8f8",
+      "line_count": 1071
     },
     {
       "id": "google-ip",
@@ -448,8 +448,8 @@
       "runtime_path": "rules/mrs/ipcidr/google-ip.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "f47649753ef68f739b80d47a003558da65cc9686a872fee5d09b601c36ad3fd6",
-      "line_count": 7393
+      "sha256": "a0bbf374cbaa51581b28a5095a14b1223f37305049c16af3fe4c731c8abe5093",
+      "line_count": 8059
     },
     {
       "id": "okx",
@@ -512,8 +512,8 @@
       "runtime_path": "rules/mrs/domain/bilibili.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "38314c434f9c4d9b17444d47d7c675e2832bb6f926dd009c25ab2c9bd769bd13",
-      "line_count": 52
+      "sha256": "d50190957169dab46966df8572bec3a8ab95714b220bf50ac5e8a86fb225a7df",
+      "line_count": 53
     },
     {
       "id": "youtube",
@@ -528,7 +528,7 @@
       "runtime_path": "rules/mrs/domain/youtube.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "e52475b78e8c50727fa45b682f68709b74a146719cd662131332c59b6545c245",
+      "sha256": "ec32854438b8ad4e2f2f2ee0d578834c667f1d0cec4c82357e34629452d2fc5d",
       "line_count": 178
     },
     {
@@ -544,8 +544,8 @@
       "runtime_path": "rules/mrs/domain/tiktok.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "f6280f9328763140c88267d43f24304e6dc6afdbb2a3d5f36f0e4db3d704cd64",
-      "line_count": 37
+      "sha256": "80ae73c96756025679e573371d68806f640e1e98403aba67a1043649ab56b4b1",
+      "line_count": 36
     },
     {
       "id": "netflix-domain",
@@ -576,8 +576,8 @@
       "runtime_path": "rules/mrs/ipcidr/netflix-ip.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "0820ce84d9db2531d1b2277b688f0b816ae901e08586d725adcf8b6e24f23747",
-      "line_count": 83
+      "sha256": "4f8f67135cbbb3d3acf229c8f5e803ff5565fc21d4774a27bd17cac2e161f366",
+      "line_count": 114
     },
     {
       "id": "disney",
@@ -592,8 +592,8 @@
       "runtime_path": "rules/mrs/domain/disney.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "cdedccd5b9543fd45ce954c5e3cafa9ab315ab8ebc78693b0117e00b56085bca",
-      "line_count": 156
+      "sha256": "8931d356f6fdd841a74cbc0bd19f32c1b8a2e97f27ab0e5dc2116b84d9c519d2",
+      "line_count": 224
     },
     {
       "id": "hbo",
@@ -608,8 +608,8 @@
       "runtime_path": "rules/mrs/domain/hbo.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "b0864fdaa3ed8ea6583795feba5990e26cf46c15e58c6943980fa5ca274e84a6",
-      "line_count": 64
+      "sha256": "cbc98f5511023616dd4d169012978b9dd13d218b7cae0eae85ab0f5266a47ff1",
+      "line_count": 65
     },
     {
       "id": "spotify",
@@ -783,7 +783,7 @@
       "runtime_path": "rules/source/classical/blizzard.list",
       "license": "GPL-2.0-only",
       "max_size": 5000000,
-      "sha256": "3e20da6c5fa565de52aee7e7729184a42167f2f6b02ad63ae4b8873ba5836983",
+      "sha256": "a3abfb91bb72a9fb118dc484c8064cabdfff3f60d7e24839cb4b049d76bd2a3f",
       "line_count": 62
     },
     {
@@ -863,8 +863,8 @@
       "runtime_path": "rules/source/classical/global.list",
       "license": "GPL-2.0-only",
       "max_size": 5000000,
-      "sha256": "9f88f94688686307ee2208f41634c88185207ecad82a6bec153106338a8830e0",
-      "line_count": 34809
+      "sha256": "d82b216fde0b6f4e079bf3d5740629ae96afeedb4bd72b36050fd542b47a2f16",
+      "line_count": 35028
     },
     {
       "id": "direct",
@@ -911,8 +911,8 @@
       "runtime_path": "rules/mrs/domain/china-domain.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "eef0105a5e442e336af8c8003ad4dca728b72e7ad3e4e9516d25b89713ad84df",
-      "line_count": 112062
+      "sha256": "6e658ba9a13eb74634b2c7936e8991fde0b4c4e1519dee1daf6a28f8948d953d",
+      "line_count": 111197
     },
     {
       "id": "china-ip",
@@ -927,8 +927,8 @@
       "runtime_path": "rules/mrs/ipcidr/china-ip.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "25b10091184f84689d3969f32c361eea1150af315deb707c2472f31797c024c2",
-      "line_count": 5727
+      "sha256": "c00d29de109f32746a3c88238d93f9cbdbfb212be48695157a8dc93d5f8d9aa7",
+      "line_count": 9651
     },
     {
       "id": "discord",
@@ -975,8 +975,8 @@
       "runtime_path": "rules/mrs/domain/category-ads-all.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "fb12740ed1f0fa7d65874e67f15e8a0d0a6b974859354fe8c1445c092f69f5f4",
-      "line_count": 900
+      "sha256": "d2490d5d71472b98195a6c1d05c26446a815c87c5c11e99d29e3ac8c66028b8e",
+      "line_count": 910
     },
     {
       "id": "connectivity-check",
@@ -1151,8 +1151,8 @@
       "runtime_path": "rules/mrs/domain/cloudflare.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "0eadd18abe14762a320bb2b20cd547d10a878379e3c26442bfe92fb15159c376",
-      "line_count": 74
+      "sha256": "adbbffbb865860977ac83fe53f9881b3c50f1c751f88e21017de4e9f2fa48a04",
+      "line_count": 76
     },
     {
       "id": "speedtest",
@@ -1183,8 +1183,8 @@
       "runtime_path": "rules/mrs/domain/category-scholar-!cn.mrs",
       "license": "GPL-3.0-only",
       "max_size": 8000000,
-      "sha256": "f404225f0244395ad5fc46750705fcf9ae2e480cdf6330db4486ffce7c98aa4f",
-      "line_count": 475
+      "sha256": "37bbeece0e2dc14bb70e4e8b78d590511d06884d617d6692db6bbde8129f4876",
+      "line_count": 476
     },
     {
       "id": "apple-push",
