@@ -1,10 +1,10 @@
 # Upstream update report
 
-Generated: `2026-08-31T09:42:39+00:00`
+Generated: `2026-11-02T11:00:57+00:00`
 
 ## Summary
 
-- Changed sources: 24
+- Changed sources: 27
 - Failures: 0
 - Warnings: 0
 
@@ -12,30 +12,33 @@ Generated: `2026-08-31T09:42:39+00:00`
 
 | Source | Old SHA-256 | New SHA-256 | Old rules | New rules |
 |---|---|---|---:|---:|
-| `openai` | `9e54437c916f` | `19d194277b7e` | 21 | 22 |
-| `github` | `de2ce2671b1d` | `e1c015908fae` | 63 | 64 |
-| `x` | `d75ae4252e61` | `e1b7735ec2af` | 26 | 27 |
-| `facebook` | `1bd62dd757a1` | `f4bc4d117521` | 397 | 396 |
-| `amazon` | `674f92c0be79` | `019a5004d9d2` | 245 | 246 |
-| `apple-cn` | `29ab51231d36` | `97a0f9d9d843` | 164 | 165 |
-| `apple` | `c92e85a92cf2` | `d59fa9ff98d7` | 1790 | 1792 |
-| `bing` | `d2a0f9a41e3b` | `76e566bc13d2` | 41 | 40 |
-| `microsoft` | `d5e376633570` | `a085037143f2` | 746 | 748 |
-| `google-domain` | `872e3dc1e612` | `f639665a2c02` | 1069 | 1071 |
-| `google-ip` | `f47649753ef6` | `a0bbf374cbaa` | 7393 | 8059 |
-| `bilibili` | `38314c434f9c` | `d50190957169` | 52 | 53 |
-| `youtube` | `e52475b78e8c` | `ec32854438b8` | 178 | 178 |
-| `tiktok` | `f6280f932876` | `80ae73c96756` | 37 | 36 |
-| `netflix-ip` | `0820ce84d9db` | `4f8f67135cbb` | 83 | 114 |
-| `disney` | `cdedccd5b954` | `8931d356f6fd` | 156 | 224 |
-| `hbo` | `b0864fdaa3ed` | `cbc98f551102` | 64 | 65 |
-| `blizzard` | `3e20da6c5fa5` | `a3abfb91bb72` | 62 | 62 |
-| `global` | `9f88f9468868` | `d82b216fde0b` | 34809 | 35028 |
-| `china-domain` | `eef0105a5e44` | `6e658ba9a13e` | 112062 | 111197 |
-| `china-ip` | `25b10091184f` | `c00d29de109f` | 5727 | 9651 |
-| `category-ads-all` | `fb12740ed1f0` | `d2490d5d7147` | 900 | 910 |
-| `cloudflare` | `0eadd18abe14` | `adbbffbb8658` | 74 | 76 |
-| `category-scholar-!cn` | `f404225f0244` | `37bbeece0e2d` | 475 | 476 |
+| `test` | `57a9b902ab3d` | `19c9272be350` | 61 | 62 |
+| `openai` | `19d194277b7e` | `6aede2e962e4` | 22 | 24 |
+| `github` | `e1c015908fae` | `1c6b5790a087` | 64 | 65 |
+| `facebook` | `f4bc4d117521` | `7bf95664c32f` | 396 | 397 |
+| `amazon` | `019a5004d9d2` | `0d9d796059b2` | 246 | 247 |
+| `apple` | `d59fa9ff98d7` | `a86d969aaeb1` | 1792 | 1793 |
+| `bing` | `76e566bc13d2` | `6b001003152c` | 40 | 41 |
+| `microsoft` | `a085037143f2` | `4d4b8a1d0957` | 748 | 755 |
+| `google-domain` | `f639665a2c02` | `a87ffd5d32df` | 1071 | 1078 |
+| `google-ip` | `a0bbf374cbaa` | `a76acd5d076b` | 8059 | 8559 |
+| `tiktok` | `80ae73c96756` | `408348fbea47` | 36 | 40 |
+| `netflix-domain` | `4cf3bf6f2b28` | `8df5a0903503` | 24 | 24 |
+| `netflix-ip` | `4f8f67135cbb` | `409cee1a04e6` | 114 | 122 |
+| `disney` | `8931d356f6fd` | `21fee1a588ef` | 224 | 224 |
+| `spotify` | `f3e69f940cac` | `385c642d4b57` | 28 | 28 |
+| `blizzard` | `a3abfb91bb72` | `0ccab4f1bb94` | 62 | 62 |
+| `global` | `d82b216fde0b` | `6dbfdc192937` | 35028 | 35278 |
+| `private-domain` | `10918636e35f` | `7f396a73bf5c` | 130 | 132 |
+| `china-domain` | `6e658ba9a13e` | `f03c301bc6ef` | 111197 | 110177 |
+| `china-ip` | `c00d29de109f` | `1e38f21f823f` | 9651 | 10012 |
+| `category-ads-all` | `d2490d5d7147` | `e73d0b7051a3` | 910 | 904 |
+| `connectivity-check` | `90d6616b58e9` | `f233a6decd94` | 27 | 28 |
+| `dropbox` | `6e96f161ed76` | `0b79496b3fb1` | 16 | 25 |
+| `paypal` | `3add0df2f1db` | `3b13b6dfcb94` | 245 | 245 |
+| `cloudflare` | `adbbffbb8658` | `e9e9928f3b95` | 76 | 76 |
+| `speedtest` | `53be15388001` | `f86908217750` | 13 | 20 |
+| `category-scholar-!cn` | `37bbeece0e2d` | `f8b46c3ecc5a` | 476 | 466 |
 
 ## Review checklist
 
