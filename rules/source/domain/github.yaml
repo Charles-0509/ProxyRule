@@ -28,6 +28,7 @@ payload:
     - productionresultssa19.blob.core.windows.net
     - copilot-proxy.githubusercontent.com
     - copilot-workspace.githubnext.com
+    - production-copilot-host-westus.webpubsub.azure.com
     - copilotprodattachments.blob.core.windows.net
     - +.atom.io
     - +.dependabot.com
@@ -60,6 +61,7 @@ payload:
     - +.npm.community
     - +.npmjs.com
     - +.npmjs.org
+    - +.cafe.github.com
     - +.collector.github.com
     - copilot-telemetry-service.githubusercontent.com
     - copilot-telemetry.githubusercontent.com
