@@ -94,10 +94,32 @@ dns:
   listen: 0.0.0.0:7874
   ipv6: false
   cache-algorithm: arc
+  prefer-h3: false
   enhanced-mode: fake-ip
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter-mode: rule
   fake-ip-filter:
+    - DOMAIN-SUFFIX,argotunnel.com,real-ip
+    - DOMAIN-SUFFIX,cftunnel.com,real-ip
+    - DOMAIN,guzzoni.apple.com,real-ip
+    - DOMAIN-SUFFIX,smoot.apple.com,real-ip
+    - DOMAIN,api-siri-prod.apple.com,real-ip
+    - DOMAIN,seed.siri.apple.com,real-ip
+    - DOMAIN,apple-relay.apple.com,real-ip
+    - DOMAIN,apple-relay.cloudflare.com,real-ip
+    - DOMAIN,apple-relay.fastly-edge.com,real-ip
+    - DOMAIN,cp4.cloudflare.com,real-ip
+    - DOMAIN,apple-relay.mask.apple-dns.net,real-ip
+    - DOMAIN,mask-api.icloud.com,real-ip
+    - DOMAIN,mask-api.fe2.apple-dns.net,real-ip
+    - DOMAIN,apple-relay.akamaized.net,real-ip
+    - DOMAIN,apple-carry-relay.cloudflare.com,real-ip
+    - DOMAIN,gspe1-ssl.ls.apple.com,real-ip
+    - DOMAIN,gateway.icloud.com,real-ip
+    - DOMAIN,probe.icloud.com,real-ip
+    - DOMAIN,metrics.icloud.com,real-ip
+    - DOMAIN,wps.apple.com,real-ip
+    - DOMAIN,ls.apple.com,real-ip
     - RULE-SET,private-domain,real-ip
     - RULE-SET,china-domain,real-ip
     - RULE-SET,connectivity-check,real-ip
@@ -105,39 +127,132 @@ dns:
     - RULE-SET,apple-push,real-ip
     - RULE-SET,compatibility,real-ip
     - MATCH,fake-ip
+  # IP-literal DoH bootstrap; no plaintext/system resolver fallback.
   default-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
+    - https://223.5.5.5/dns-query
+    - https://1.12.12.12/dns-query
+  # Unclassified/proxy domains use encrypted resolvers through a proxy.
   nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
+    - 'https://1.1.1.1/dns-query#手动选择'
+    - 'https://8.8.8.8/dns-query#手动选择'
+  # Resolve the proxy itself directly, before connecting to that proxy.
   proxy-server-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
+    - 'https://223.5.5.5/dns-query#DIRECT'
+    - 'https://1.12.12.12/dns-query#DIRECT'
   direct-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  direct-nameserver-follow-policy: true
+    - 'https://223.5.5.5/dns-query#DIRECT'
+    - 'https://1.12.12.12/dns-query#DIRECT'
+  direct-nameserver-follow-policy: false
   respect-rules: true
   nameserver-policy:
+    'guzzoni.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    '+.smoot.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'api-siri-prod.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'seed.siri.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'apple-relay.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'apple-relay.cloudflare.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'apple-relay.fastly-edge.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'cp4.cloudflare.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'apple-relay.mask.apple-dns.net':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'mask-api.icloud.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'mask-api.fe2.apple-dns.net':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'apple-relay.akamaized.net':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'apple-carry-relay.cloudflare.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'gspe1-ssl.ls.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'gateway.icloud.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'probe.icloud.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'metrics.icloud.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'wps.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'ls.apple.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    '+.edu.cn':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    '+.zfye.site':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    '+.argotunnel.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    '+.cftunnel.com':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
     'rule-set:private-domain':
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
     'rule-set:china-domain':
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
     'rule-set:connectivity-check':
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
     'rule-set:category-ntp':
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
     'rule-set:apple-push':
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
     'rule-set:compatibility':
-      - https://dns.alidns.com/dns-query
-      - https://doh.pub/dns-query
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:bank':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:apple-cn':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:bilibili':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:bing':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:microsoft-rewards':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:direct':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:steam-download':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
 
 proxy-groups:
   - name: 所有-手动
@@ -370,6 +485,24 @@ proxy-groups:
       - 所有-手动
       - 所有-自动
       - 直连
+      - 拒绝
+  - name: Apple Intelligence
+    type: select
+    proxies:
+      - 直连
+      - 手动选择
+      - 所有-故转
+      - 香港-故转
+      - 台湾-故转
+      - 日本-故转
+      - 新加坡-故转
+      - 韩国-故转
+      - 美国-故转
+      - 英国-故转
+      - 其他地区-故转
+      - Azure
+      - 所有-手动
+      - 所有-自动
       - 拒绝
   - name: GitHub
     type: select
@@ -1051,6 +1184,8 @@ proxy-groups:
       - 手动选择
 
 rules:
+  - DOMAIN-SUFFIX,argotunnel.com,DIRECT
+  - DOMAIN-SUFFIX,cftunnel.com,DIRECT
   - DOMAIN-SUFFIX,lan,国内
   - DOMAIN-SUFFIX,local,国内
   - DOMAIN-SUFFIX,home.arpa,国内
@@ -1067,6 +1202,25 @@ rules:
   - IP-CIDR6,fc00::/7,国内,no-resolve
   - IP-CIDR6,fe80::/10,国内,no-resolve
   - IP-CIDR6,ff00::/8,国内,no-resolve
+  - DOMAIN,guzzoni.apple.com,Apple Intelligence
+  - DOMAIN-SUFFIX,smoot.apple.com,Apple Intelligence
+  - DOMAIN,api-siri-prod.apple.com,Apple Intelligence
+  - DOMAIN,seed.siri.apple.com,Apple Intelligence
+  - DOMAIN,apple-relay.apple.com,Apple Intelligence
+  - DOMAIN,apple-relay.cloudflare.com,Apple Intelligence
+  - DOMAIN,apple-relay.fastly-edge.com,Apple Intelligence
+  - DOMAIN,cp4.cloudflare.com,Apple Intelligence
+  - DOMAIN,apple-relay.mask.apple-dns.net,Apple Intelligence
+  - DOMAIN,mask-api.icloud.com,Apple Intelligence
+  - DOMAIN,mask-api.fe2.apple-dns.net,Apple Intelligence
+  - DOMAIN,apple-relay.akamaized.net,Apple Intelligence
+  - DOMAIN,apple-carry-relay.cloudflare.com,Apple Intelligence
+  - DOMAIN,gspe1-ssl.ls.apple.com,Apple Intelligence
+  - DOMAIN,gateway.icloud.com,Apple Intelligence
+  - DOMAIN,probe.icloud.com,Apple Intelligence
+  - DOMAIN,metrics.icloud.com,Apple Intelligence
+  - DOMAIN,wps.apple.com,Apple Intelligence
+  - DOMAIN,ls.apple.com,Apple Intelligence
   - RULE-SET,bank,国内
   - RULE-SET,compatibility,国内
   - RULE-SET,private-domain,国内

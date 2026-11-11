@@ -39,6 +39,11 @@
 - `*.edu.cn` 和 `*.zfye.site`：无条件直连，优先级高于广告和代理规则。
 - 广告规则：拒绝，可在“广告拦截”组临时切换为直连排查误杀。
 - AI、GitHub、Telegram、社交、流媒体、游戏等：使用各自策略组。
+- `Apple Intelligence`：按用户提供的 19 条域名规则独立分流，默认“直连”，
+  可在面板切换到 Azure、手动选择或地区故转组。规则优先于国内、Apple 和
+  Cloudflare 通用规则；仅 `smoot.apple.com` 匹配所有子域，其余使用精确域名。
+  这些域名同时涉及 Siri、iCloud 和位置服务等，分组并不意味着它们只服务于 AI。
+  配置同时保留真实 IP 与直连 DoH，避免代理不可用时默认直连仍依赖代理 DNS。
 - Telegram 在上游 GeoIP 之外保留经本地运行日志确认的窄范围 `/32` 补充规则，
   避免新端点落入最终兜底后在中国大陆直连超时。
 - 未分类境外流量和最终兜底：默认使用“手动选择”。
@@ -60,6 +65,41 @@ Zashboard 文件夹属于浏览器本地设置。导入
 Fake-IP 主配置使用 `198.18.0.1/16`、国内加密 DNS、节点域名专用 DNS、
 规则感知 DNS、TCP/UDP 53 劫持和真实 IP 兼容清单。TUN 同时启用
 `auto-route` 与 Linux 所需的 `auto-redirect`，并启用严格路由。
+
+DNS 上游全部使用 HTTPS，未配置 `system`、明文 UDP/TCP 或失败后的明文回退：
+
+- 启动解析与节点域名解析：阿里 DNS `223.5.5.5`、DNSPod `1.12.12.12`
+  的 IP 地址形式 DoH，节点解析不依赖代理节点已连接，避免循环依赖。
+- 国内、银行、Apple 中国服务、Bing/Rewards、Steam 下载等已列明的直连域名：
+  国内 DoH 直连。实际 DIRECT 出口的域名也使用国内 DoH，且不跟随代理 DNS 策略。
+- 其余域名：Cloudflare/Google 的 IP 地址形式 DoH，通过“手动选择”出口访问。
+  DNS 提供商仍能看到查询；国内直连查询有意交给国内提供商，不以检测页面
+  是否显示国内 DNS 作为唯一的泄漏判定。代理不可用时不自动改为本地明文解析。
+- `respect-rules` 保持开启，明确指定 `#DIRECT`/`#手动选择` 的 DNS 连接按指定出口走。
+  `prefer-h3` 关闭，不把 Loon 的 DoH3/DoQ 配置直接搬入核心。
+
+OpenClash“增强”模式下，YAML 的 `tun.dns-hijack` 并不会单独建立系统防火墙规则。
+应在 OpenClash 启用本地 DNS 劫持，让 dnsmasq 转发到 `127.0.0.1#7874`，
+并确认 LAN 客户端的网关和 DNS 指向软路由；其他解析插件不应形成循环转发。
+保持 LAN IPv6 分配与核心的 IPv6 设置一致，避免客户端经上级路由的 IPv6 绕过代理。
+
+此方案控制经过 Mihomo 的 DNS；应用自带的 DoH/HTTPDNS（尤其 HTTPS 443）不能
+仅凭 53 端口劫持完全接管。Loon 的 `Prevent_DNS_Leaks` 当前只将检测站点代理，
+并非通用 DNS 防泄漏。它的 `Block_HTTPDNS` 含 URL/UA/MITM 与共享 IP 规则，
+因此未整包移植或默认封锁所有 853/443 端口。浏览器安全 DNS、Android 私人 DNS、
+其他 VPN/Tailscale 应单独检查；不要为让检测站点“全绿”而强制所有国内 DNS 出境。
+首次启动应等待规则 provider 全部加载完成后再测 DNS；监听端口先就绪并不代表
+规则集已经可用，过早查询可能得到尚未套用例外规则的 Fake-IP。
+
+参考：[Mihomo DNS](https://wiki.metacubex.one/config/dns/)、
+[Mihomo TUN DNS 劫持](https://wiki.metacubex.one/config/inbound/tun/)、
+[Loon DNS 回退逻辑](https://nsloon.app/docs/DNS/)。
+
+Cloudflare Tunnel 的 `argotunnel.com`、`cftunnel.com` 返回真实 IP，并优先
+直连。OpenClash 的 `DIRECT` 仍经过核心转发；如需让 Tunnel 不受核心重启影响，
+还需在路由器的目标 IP 绕过列表（`wan_ac_black_ips`）中加入
+[Cloudflare 公布的 Tunnel 边缘地址](https://developers.cloudflare.com/cloudflare-one/networks/connectors/cloudflare-tunnel/configure-tunnels/tunnel-with-firewall/)，
+随后重启 cloudflared，验证 DNS、实际套接字及防火墙绕过规则。
 
 OpenWrt 至少应具备 TUN、完整 IP 工具和 nftables/firewall4 支持。不同固件
 的软件包名称可能不同；启动失败时优先检查 OpenClash 日志中的缺失内核模块、

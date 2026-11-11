@@ -17,6 +17,29 @@ TEST_URL = "https://www.gstatic.com/generate_204"
 # ahead of the upstream rule-set instead of broadening the catch-all policy.
 TELEGRAM_OBSERVED_IPS = ["194.221.250.50/32"]
 
+# User-supplied on 2026-11-11; preserve exact hosts except the requested suffix.
+APPLE_INTELLIGENCE_RULES = [
+    "DOMAIN,guzzoni.apple.com",
+    "DOMAIN-SUFFIX,smoot.apple.com",
+    "DOMAIN,api-siri-prod.apple.com",
+    "DOMAIN,seed.siri.apple.com",
+    "DOMAIN,apple-relay.apple.com",
+    "DOMAIN,apple-relay.cloudflare.com",
+    "DOMAIN,apple-relay.fastly-edge.com",
+    "DOMAIN,cp4.cloudflare.com",
+    "DOMAIN,apple-relay.mask.apple-dns.net",
+    "DOMAIN,mask-api.icloud.com",
+    "DOMAIN,mask-api.fe2.apple-dns.net",
+    "DOMAIN,apple-relay.akamaized.net",
+    "DOMAIN,apple-carry-relay.cloudflare.com",
+    "DOMAIN,gspe1-ssl.ls.apple.com",
+    "DOMAIN,gateway.icloud.com",
+    "DOMAIN,probe.icloud.com",
+    "DOMAIN,metrics.icloud.com",
+    "DOMAIN,wps.apple.com",
+    "DOMAIN,ls.apple.com",
+]
+
 REGIONS = [
     ("香港", r"(?i)(香港|Hong\s*Kong|\bHK\b|🇭🇰)"),
     ("台湾", r"(?i)(台湾|台灣|Tai\s*Wan|Taiwan|\bTW\b|🇹🇼)"),
@@ -153,13 +176,13 @@ def groups_block() -> str:
     lines += group_mapping("规则更新", ["手动选择", "所有-故转", "所有-自动", "Azure", "直连"])
     service_choices = ["手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "直连", "拒绝"]
     service_groups = [
-        "AI", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
+        "AI", "Apple Intelligence", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
         "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
         "Amazon", "Crunchyroll", "流媒体", "Spotify", "Steam社区", "Steam下载", "游戏", "Apple", "Bing & Rewards", "Microsoft", "OneDrive",
         "Google", "办公协作", "Dropbox", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
     ]
     for name in service_groups:
-        choices = ["直连"] + service_choices if name in {"Bing & Rewards", "Steam下载"} else service_choices
+        choices = ["直连"] + service_choices if name in {"Apple Intelligence", "Bing & Rewards", "Steam下载"} else service_choices
         lines += group_mapping(name, choices)
     lines += group_mapping("ApplePush", ["直连", "手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "拒绝"])
     lines += group_mapping("国内", ["直连", "手动选择", "所有-自动"])
@@ -170,10 +193,14 @@ def groups_block() -> str:
 def dns_block(enhanced_mode: str) -> str:
     fake = ""
     if enhanced_mode == "fake-ip":
-        fake = """
+        apple_real_ip = "\n".join(f"    - {rule},real-ip" for rule in APPLE_INTELLIGENCE_RULES)
+        fake = f"""
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter-mode: rule
   fake-ip-filter:
+    - DOMAIN-SUFFIX,argotunnel.com,real-ip
+    - DOMAIN-SUFFIX,cftunnel.com,real-ip
+{apple_real_ip}
     - RULE-SET,private-domain,real-ip
     - RULE-SET,china-domain,real-ip
     - RULE-SET,connectivity-check,real-ip
@@ -181,33 +208,56 @@ def dns_block(enhanced_mode: str) -> str:
     - RULE-SET,apple-push,real-ip
     - RULE-SET,compatibility,real-ip
     - MATCH,fake-ip"""
-    policy_ids = ["private-domain", "china-domain", "connectivity-check", "category-ntp", "apple-push", "compatibility"]
+    # Keep direct services and bootstrap independent of proxy availability.
+    policy_ids = [
+        "private-domain", "china-domain", "connectivity-check", "category-ntp",
+        "apple-push", "compatibility", "bank", "apple-cn", "bilibili",
+        "bing", "microsoft-rewards", "direct", "steam-download",
+    ]
     policy_lines: list[str] = []
+    for rule in APPLE_INTELLIGENCE_RULES:
+        kind, domain = rule.split(",", 1)
+        key = f"+.{domain}" if kind == "DOMAIN-SUFFIX" else domain
+        policy_lines += [
+            f"    {q(key)}:",
+            "      - 'https://223.5.5.5/dns-query#DIRECT'",
+            "      - 'https://1.12.12.12/dns-query#DIRECT'",
+        ]
+    for domain in ("edu.cn", "zfye.site", "argotunnel.com", "cftunnel.com"):
+        policy_lines += [
+            f"    '+.{domain}':",
+            "      - 'https://223.5.5.5/dns-query#DIRECT'",
+            "      - 'https://1.12.12.12/dns-query#DIRECT'",
+        ]
     for ident in policy_ids:
         policy_lines += [
             f"    'rule-set:{ident}':",
-            "      - https://dns.alidns.com/dns-query",
-            "      - https://doh.pub/dns-query",
+            "      - 'https://223.5.5.5/dns-query#DIRECT'",
+            "      - 'https://1.12.12.12/dns-query#DIRECT'",
         ]
     return f"""dns:
   enable: true
   listen: 0.0.0.0:7874
   ipv6: false
   cache-algorithm: arc
+  prefer-h3: false
   enhanced-mode: {enhanced_mode}{fake}
+  # IP-literal DoH bootstrap; no plaintext/system resolver fallback.
   default-nameserver:
-    - 223.5.5.5
-    - 119.29.29.29
+    - https://223.5.5.5/dns-query
+    - https://1.12.12.12/dns-query
+  # Unclassified/proxy domains use encrypted resolvers through a proxy.
   nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
+    - 'https://1.1.1.1/dns-query#手动选择'
+    - 'https://8.8.8.8/dns-query#手动选择'
+  # Resolve the proxy itself directly, before connecting to that proxy.
   proxy-server-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
+    - 'https://223.5.5.5/dns-query#DIRECT'
+    - 'https://1.12.12.12/dns-query#DIRECT'
   direct-nameserver:
-    - https://dns.alidns.com/dns-query
-    - https://doh.pub/dns-query
-  direct-nameserver-follow-policy: true
+    - 'https://223.5.5.5/dns-query#DIRECT'
+    - 'https://1.12.12.12/dns-query#DIRECT'
+  direct-nameserver-follow-policy: false
   respect-rules: true
   nameserver-policy:
 {chr(10).join(policy_lines)}"""
@@ -215,6 +265,7 @@ def dns_block(enhanced_mode: str) -> str:
 
 def rules_block() -> str:
     rules = [
+        "DOMAIN-SUFFIX,argotunnel.com,DIRECT", "DOMAIN-SUFFIX,cftunnel.com,DIRECT",
         "DOMAIN-SUFFIX,lan,国内", "DOMAIN-SUFFIX,local,国内", "DOMAIN-SUFFIX,home.arpa,国内",
         "DOMAIN-SUFFIX,edu.cn,国内", "DOMAIN-SUFFIX,zfye.site,国内",
         "IP-CIDR,127.0.0.0/8,国内,no-resolve", "IP-CIDR,10.0.0.0/8,国内,no-resolve",
@@ -223,6 +274,7 @@ def rules_block() -> str:
         "IP-CIDR,224.0.0.0/4,国内,no-resolve",
         "IP-CIDR6,::1/128,国内,no-resolve", "IP-CIDR6,fc00::/7,国内,no-resolve",
         "IP-CIDR6,fe80::/10,国内,no-resolve", "IP-CIDR6,ff00::/8,国内,no-resolve",
+        *(f"{rule},Apple Intelligence" for rule in APPLE_INTELLIGENCE_RULES),
         "RULE-SET,bank,国内", "RULE-SET,compatibility,国内", "RULE-SET,private-domain,国内",
         "RULE-SET,category-ads-all,广告拦截", "RULE-SET,block,广告拦截",
         "RULE-SET,apple-push,ApplePush", "RULE-SET,connectivity-check,国内", "RULE-SET,category-ntp,国内",

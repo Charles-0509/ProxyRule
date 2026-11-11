@@ -3,10 +3,12 @@
 from __future__ import annotations
 
 import importlib.util
+import ipaddress
 import json
 import re
 import unittest
 from pathlib import Path
+from urllib.parse import urlsplit
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -70,8 +72,96 @@ class RepositoryTests(unittest.TestCase):
         self.assertIn("endpoint-independent-nat: false", self.stable)
         self.assertNotIn("global-client-fingerprint", self.stable)
 
+    def test_dns_has_encrypted_bootstrap_and_no_plaintext_fallback(self):
+        for config in (self.stable, self.redir):
+            dns = config.split("\ndns:\n", 1)[1].split("\nproxy-groups:", 1)[0]
+            self.assertIn("prefer-h3: false", dns)
+            self.assertIn("direct-nameserver-follow-policy: false", dns)
+            self.assertIn("respect-rules: true", dns)
+            self.assertNotIn("\n  fallback:", dns)
+            for key, fragment in (
+                ("default-nameserver", ""),
+                ("nameserver", "手动选择"),
+                ("proxy-server-nameserver", "DIRECT"),
+                ("direct-nameserver", "DIRECT"),
+            ):
+                block = dns.split(f"\n  {key}:\n", 1)[1]
+                block = re.split(r"\n  [a-z][a-z-]*:", block, maxsplit=1)[0]
+                resolvers = re.findall(r"^    - (.+)$", block, re.MULTILINE)
+                self.assertGreaterEqual(len(resolvers), 2, key)
+                for resolver in resolvers:
+                    endpoint = urlsplit(resolver.strip("'\""))
+                    self.assertEqual("https", endpoint.scheme, key)
+                    ipaddress.ip_address(endpoint.hostname)
+                    self.assertEqual(fragment, endpoint.fragment, key)
+            for domain in ("edu.cn", "zfye.site", "argotunnel.com", "cftunnel.com"):
+                self.assertIn(f"'+.{domain}':", dns)
+            self.assertIn("'rule-set:china-domain':", dns)
+            self.assertIn("'rule-set:steam-download':", dns)
+            self.assertIn("    - any:53", config)
+            self.assertIn("    - tcp://any:53", config)
+
+    def test_apple_intelligence_routes_defaults_and_dns(self):
+        exact_hosts = {
+            "guzzoni.apple.com", "api-siri-prod.apple.com", "seed.siri.apple.com",
+            "apple-relay.apple.com", "apple-relay.cloudflare.com",
+            "apple-relay.fastly-edge.com", "cp4.cloudflare.com",
+            "apple-relay.mask.apple-dns.net", "mask-api.icloud.com",
+            "mask-api.fe2.apple-dns.net", "apple-relay.akamaized.net",
+            "apple-carry-relay.cloudflare.com", "gspe1-ssl.ls.apple.com",
+            "gateway.icloud.com", "probe.icloud.com", "metrics.icloud.com",
+            "wps.apple.com", "ls.apple.com",
+        }
+        expected_rules = {f"DOMAIN,{host}" for host in exact_hosts}
+        expected_rules.add("DOMAIN-SUFFIX,smoot.apple.com")
+        self.assertEqual(expected_rules, set(GENERATOR.APPLE_INTELLIGENCE_RULES))
+        self.assertEqual(19, len(GENERATOR.APPLE_INTELLIGENCE_RULES))
+        for config in (self.stable, self.redir):
+            group = config.split("  - name: Apple Intelligence\n", 1)[1].split("  - name:", 1)[0]
+            self.assertRegex(group, r"proxies:\n\s+- 直连\n")
+            self.assertIn("      - Azure\n", group)
+            dns = config.split("\ndns:\n", 1)[1].split("\nproxy-groups:", 1)[0]
+            for rule in expected_rules:
+                full_rule = f"{rule},Apple Intelligence"
+                self.assertEqual(1, config.count(full_rule))
+                for broad in (
+                    "RULE-SET,bank,国内", "RULE-SET,category-ads-all,广告拦截",
+                    "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple",
+                    "RULE-SET,cloudflare,Cloudflare", "RULE-SET,china-domain,国内",
+                ):
+                    self.assertLess(config.index(full_rule), config.index(broad))
+                kind, host = rule.split(",", 1)
+                key = f"+.{host}" if kind == "DOMAIN-SUFFIX" else host
+                self.assertIn(
+                    f"    '{key}':\n"
+                    "      - 'https://223.5.5.5/dns-query#DIRECT'\n"
+                    "      - 'https://1.12.12.12/dns-query#DIRECT'",
+                    dns,
+                )
+                if config is self.stable:
+                    self.assertIn(f"    - {rule},real-ip\n", dns)
+            intelligence_rules = [
+                line.strip()[2:] for line in config.splitlines()
+                if line.strip().startswith("- ") and line.endswith(",Apple Intelligence")
+            ]
+            for host, matched in (
+                ("guzzoni.apple.com", True), ("cp4.cloudflare.com", True),
+                ("api.smoot.apple.com", True), ("smoot.apple.com", True),
+                ("www.apple.com", False), ("push.apple.com", False),
+                ("other.cloudflare.com", False), ("sub.guzzoni.apple.com", False),
+            ):
+                hit = any(
+                    (fields[0] == "DOMAIN" and host == fields[1]) or
+                    (fields[0] == "DOMAIN-SUFFIX" and
+                     (host == fields[1] or host.endswith("." + fields[1])))
+                    for fields in (rule.split(",") for rule in intelligence_rules)
+                )
+                self.assertEqual(matched, hit, host)
+
     def test_rule_order_and_representative_routes(self):
         expected = [
+            "DOMAIN-SUFFIX,argotunnel.com,DIRECT",
+            "DOMAIN-SUFFIX,cftunnel.com,DIRECT",
             "DOMAIN-SUFFIX,edu.cn,国内",
             "DOMAIN-SUFFIX,zfye.site,国内",
             "IP-CIDR,192.168.0.0/16,国内,no-resolve",
@@ -97,6 +187,15 @@ class RepositoryTests(unittest.TestCase):
         ]
         positions = [self.stable.index(item) for item in expected]
         self.assertEqual(positions, sorted(positions))
+        for domain in ("argotunnel.com", "cftunnel.com"):
+            self.assertLess(
+                self.stable.index(f"DOMAIN-SUFFIX,{domain},real-ip"),
+                self.stable.index("MATCH,fake-ip"),
+            )
+            self.assertLess(
+                self.redir.index(f"DOMAIN-SUFFIX,{domain},DIRECT"),
+                self.redir.index("RULE-SET,cloudflare,Cloudflare"),
+            )
         checks = {
             "rules/source/domain/openai.yaml": ("openai.com", "chatgpt.com"),
             "rules/source/domain/github.yaml": ("github.com",),
@@ -178,11 +277,11 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(["Azure"], folders[2]["manualIncludes"])
         bootstrap = (ROOT / "config/zashboard-folder-bootstrap.js").read_text(encoding="utf-8")
         self.assertIn("proxyrule-failover", bootstrap)
-        self.assertIn("2026-08-13-v6", bootstrap)
+        self.assertIn("2026-11-11-v7", bootstrap)
         self.assertIn("manualIncludes: ['Azure']", bootstrap)
         self.assertNotIn("首选", bootstrap)
         self.assertIn("Bing & Rewards", bootstrap)
-        for name in ["Bing & Rewards", "Steam社区", "Steam下载"]:
+        for name in ["Apple Intelligence", "Bing & Rewards", "Steam社区", "Steam下载"]:
             self.assertIn(name, folders[0]["manualIncludes"])
             self.assertIn(name, bootstrap)
 

@@ -1,10 +1,10 @@
 (() => {
-  const version = '2026-08-13-v6'
+  const version = '2026-11-11-v7'
   const versionKey = 'proxyrule/folder-layout-version'
   if (localStorage.getItem(versionKey) === version) return
 
   const strategyGroups = [
-    '手动选择', '规则更新', 'AI', 'GitHub', '开发工具', 'Cloudflare', 'Telegram',
+    '手动选择', '规则更新', 'AI', 'Apple Intelligence', 'GitHub', '开发工具', 'Cloudflare', 'Telegram',
     'Discord', 'WhatsApp', 'X', 'Facebook', 'Instagram', 'Reddit', 'TikTok',
     'YouTube', 'Netflix', 'Disney+', 'HBO', 'Amazon', 'Crunchyroll', '流媒体',
     'Spotify', 'Steam社区', 'Steam下载', '游戏', 'Apple', 'Bing & Rewards', 'Microsoft', 'OneDrive', 'Google', '办公协作',
