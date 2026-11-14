@@ -17,29 +17,6 @@ TEST_URL = "https://www.gstatic.com/generate_204"
 # ahead of the upstream rule-set instead of broadening the catch-all policy.
 TELEGRAM_OBSERVED_IPS = ["194.221.250.50/32"]
 
-# User-supplied on 2026-11-11; preserve exact hosts except the requested suffix.
-APPLE_INTELLIGENCE_RULES = [
-    "DOMAIN,guzzoni.apple.com",
-    "DOMAIN-SUFFIX,smoot.apple.com",
-    "DOMAIN,api-siri-prod.apple.com",
-    "DOMAIN,seed.siri.apple.com",
-    "DOMAIN,apple-relay.apple.com",
-    "DOMAIN,apple-relay.cloudflare.com",
-    "DOMAIN,apple-relay.fastly-edge.com",
-    "DOMAIN,cp4.cloudflare.com",
-    "DOMAIN,apple-relay.mask.apple-dns.net",
-    "DOMAIN,mask-api.icloud.com",
-    "DOMAIN,mask-api.fe2.apple-dns.net",
-    "DOMAIN,apple-relay.akamaized.net",
-    "DOMAIN,apple-carry-relay.cloudflare.com",
-    "DOMAIN,gspe1-ssl.ls.apple.com",
-    "DOMAIN,gateway.icloud.com",
-    "DOMAIN,probe.icloud.com",
-    "DOMAIN,metrics.icloud.com",
-    "DOMAIN,wps.apple.com",
-    "DOMAIN,ls.apple.com",
-]
-
 REGIONS = [
     ("香港", r"(?i)(香港|Hong\s*Kong|\bHK\b|🇭🇰)"),
     ("台湾", r"(?i)(台湾|台灣|Tai\s*Wan|Taiwan|\bTW\b|🇹🇼)"),
@@ -142,6 +119,19 @@ def group_mapping(name: str, proxies: list[str]) -> list[str]:
     return [f"  - name: {name}", "    type: select", "    proxies:"] + [f"      - {item}" for item in unique_proxies]
 
 
+POLICY_ENGLISH_NAMES = {
+    "学术": "Academic", "广告拦截": "AdBlock", "国内": "China",
+    "加密货币": "Cryptocurrency", "开发工具": "Developer Tools",
+    "游戏": "Gaming", "国外": "Global", "办公协作": "Office",
+    "其他": "Others", "测速": "Speedtest", "Steam社区": "Steam Community",
+    "Steam下载": "Steam Download", "流媒体": "Streaming",
+}
+
+
+def policy_sort_key(name: str) -> str:
+    return POLICY_ENGLISH_NAMES.get(name, name).casefold()
+
+
 def groups_block() -> str:
     lines = ["proxy-groups:"]
     all_filter = r"(?i)^(?!(?:直连|拒绝)$).+"
@@ -172,35 +162,37 @@ def groups_block() -> str:
         ]
         lines += [f"    url: {TEST_URL}", "    interval: 300", "    lazy: true"]
     fallbacks = [f"{name}-故转" for name in region_names]
-    lines += group_mapping("手动选择", ["美国-故转", "香港-故转", "台湾-故转", "日本-故转", "新加坡-故转", "韩国-故转", "英国-故转", "其他地区-故转", "所有-故转", "Azure"])
-    lines += group_mapping("规则更新", ["手动选择", "所有-故转", "所有-自动", "Azure", "直连"])
+    policies = group_mapping("手动选择", ["美国-故转", "香港-故转", "台湾-故转", "日本-故转", "新加坡-故转", "韩国-故转", "英国-故转", "其他地区-故转", "所有-故转", "Azure"])
+    policies += group_mapping("规则更新", ["手动选择", "所有-故转", "所有-自动", "Azure", "直连"])
     service_choices = ["手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "直连", "拒绝"]
     service_groups = [
-        "AI", "Apple Intelligence", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
+        "AI", "Gemini", "Apple Intelligence", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
         "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
         "Amazon", "Crunchyroll", "流媒体", "Spotify", "Steam社区", "Steam下载", "游戏", "Apple", "Bing & Rewards", "Microsoft", "OneDrive",
         "Google", "办公协作", "Dropbox", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
+        "ApplePush", "国内", "广告拦截",
     ]
-    for name in service_groups:
-        choices = ["直连"] + service_choices if name in {"Apple Intelligence", "Bing & Rewards", "Steam下载"} else service_choices
-        lines += group_mapping(name, choices)
-    lines += group_mapping("ApplePush", ["直连", "手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "拒绝"])
-    lines += group_mapping("国内", ["直连", "手动选择", "所有-自动"])
-    lines += group_mapping("广告拦截", ["拒绝", "直连", "手动选择"])
-    return "\n".join(lines)
+    for name in sorted(service_groups, key=policy_sort_key):
+        if name == "国内":
+            choices = ["直连", "手动选择", "所有-自动"]
+        elif name == "广告拦截":
+            choices = ["拒绝", "直连", "手动选择"]
+        else:
+            choices = ["直连"] + service_choices if name in {"Apple Intelligence", "ApplePush", "Bing & Rewards", "Steam下载"} else service_choices
+        policies += group_mapping(name, choices)
+    return "\n".join(["proxy-groups:"] + policies + lines[1:])
 
 
 def dns_block(enhanced_mode: str) -> str:
     fake = ""
     if enhanced_mode == "fake-ip":
-        apple_real_ip = "\n".join(f"    - {rule},real-ip" for rule in APPLE_INTELLIGENCE_RULES)
-        fake = f"""
+        fake = """
   fake-ip-range: 198.18.0.1/16
   fake-ip-filter-mode: rule
   fake-ip-filter:
     - DOMAIN-SUFFIX,argotunnel.com,real-ip
     - DOMAIN-SUFFIX,cftunnel.com,real-ip
-{apple_real_ip}
+    - RULE-SET,apple-intelligence,real-ip
     - RULE-SET,private-domain,real-ip
     - RULE-SET,china-domain,real-ip
     - RULE-SET,connectivity-check,real-ip
@@ -211,18 +203,10 @@ def dns_block(enhanced_mode: str) -> str:
     # Keep direct services and bootstrap independent of proxy availability.
     policy_ids = [
         "private-domain", "china-domain", "connectivity-check", "category-ntp",
-        "apple-push", "compatibility", "bank", "apple-cn", "bilibili",
+        "apple-intelligence", "apple-push", "compatibility", "bank", "apple-cn", "bilibili",
         "bing", "microsoft-rewards", "direct", "steam-download",
     ]
     policy_lines: list[str] = []
-    for rule in APPLE_INTELLIGENCE_RULES:
-        kind, domain = rule.split(",", 1)
-        key = f"+.{domain}" if kind == "DOMAIN-SUFFIX" else domain
-        policy_lines += [
-            f"    {q(key)}:",
-            "      - 'https://223.5.5.5/dns-query#DIRECT'",
-            "      - 'https://1.12.12.12/dns-query#DIRECT'",
-        ]
     for domain in ("edu.cn", "zfye.site", "argotunnel.com", "cftunnel.com"):
         policy_lines += [
             f"    '+.{domain}':",
@@ -274,13 +258,13 @@ def rules_block() -> str:
         "IP-CIDR,224.0.0.0/4,国内,no-resolve",
         "IP-CIDR6,::1/128,国内,no-resolve", "IP-CIDR6,fc00::/7,国内,no-resolve",
         "IP-CIDR6,fe80::/10,国内,no-resolve", "IP-CIDR6,ff00::/8,国内,no-resolve",
-        *(f"{rule},Apple Intelligence" for rule in APPLE_INTELLIGENCE_RULES),
+        "RULE-SET,apple-intelligence,Apple Intelligence",
         "RULE-SET,bank,国内", "RULE-SET,compatibility,国内", "RULE-SET,private-domain,国内",
         "RULE-SET,category-ads-all,广告拦截", "RULE-SET,block,广告拦截",
         "RULE-SET,apple-push,ApplePush", "RULE-SET,connectivity-check,国内", "RULE-SET,category-ntp,国内",
         "RULE-SET,test,测速", "RULE-SET,speedtest,测速",
         "RULE-SET,openai,AI", "RULE-SET,claude,AI", "RULE-SET,meta-ai,AI", "RULE-SET,perplexity,AI",
-        "RULE-SET,copilot,AI", "RULE-SET,gemini,AI", "RULE-SET,groq,AI", "RULE-SET,grok,AI",
+        "RULE-SET,copilot,AI", "RULE-SET,gemini,Gemini", "RULE-SET,groq,AI", "RULE-SET,grok,AI",
         "RULE-SET,github,GitHub",
         "RULE-SET,gitlab,开发工具", "RULE-SET,bing,Bing & Rewards", "RULE-SET,microsoft-rewards,Bing & Rewards",
         "RULE-SET,docker,开发工具", "RULE-SET,cloudflare,Cloudflare",

@@ -1,0 +1,22 @@
+# User-supplied 2026-11-11; original upstream URL/license not provided.
+# Shared Siri/iCloud/location endpoints; not exclusively Apple Intelligence.
+payload:
+  - guzzoni.apple.com
+  - +.smoot.apple.com
+  - api-siri-prod.apple.com
+  - seed.siri.apple.com
+  - apple-relay.apple.com
+  - apple-relay.cloudflare.com
+  - apple-relay.fastly-edge.com
+  - cp4.cloudflare.com
+  - apple-relay.mask.apple-dns.net
+  - mask-api.icloud.com
+  - mask-api.fe2.apple-dns.net
+  - apple-relay.akamaized.net
+  - apple-carry-relay.cloudflare.com
+  - gspe1-ssl.ls.apple.com
+  - gateway.icloud.com
+  - probe.icloud.com
+  - metrics.icloud.com
+  - wps.apple.com
+  - ls.apple.com

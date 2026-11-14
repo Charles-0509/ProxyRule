@@ -13,6 +13,7 @@
 | `v2fly/domain-list-community` | Steam 域名分类参考 | MIT |
 | `ACL4SSR/ACL4SSR` | Steam 中国大陆 CDN 域名参考 | CC-BY-SA-4.0 |
 | `heunghingwan/Aethersailor-Custom_OpenClash_Rules` | Steam 下载 CDN IPv4 网段 | CC-BY-SA-4.0 |
+| 用户于 2026-11-11 提供的互联网域名清单（原始 URL 未提供） | Apple Intelligence / Siri / iCloud 等共享端点 | NOASSERTION |
 
 GPL 全文保存在 `LICENSES/`。许可证未知文件的说明见
 `LICENSES/NOASSERTION.md`，CC-BY-SA-4.0 的许可链接与改编说明见

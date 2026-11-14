@@ -39,11 +39,18 @@
 - `*.edu.cn` 和 `*.zfye.site`：无条件直连，优先级高于广告和代理规则。
 - 广告规则：拒绝，可在“广告拦截”组临时切换为直连排查误杀。
 - AI、GitHub、Telegram、社交、流媒体、游戏等：使用各自策略组。
+- `Gemini`：从 AI 中独立，沿用仓库的 `gemini.list`，优先于 Google 通用规则。
+  默认“手动选择”；如果该组当前的美国出口无法访问 Google，请在 Gemini 组中
+  单独选择已验证可用的节点或地区，不必改变 OpenAI 等其他 AI 服务的出口。
+  现有规则包含部分 Google 共享端点；通用 Google 登录等请求仍由 `Google` 组控制。
 - `Apple Intelligence`：按用户提供的 19 条域名规则独立分流，默认“直连”，
   可在面板切换到 Azure、手动选择或地区故转组。规则优先于国内、Apple 和
   Cloudflare 通用规则；仅 `smoot.apple.com` 匹配所有子域，其余使用精确域名。
   这些域名同时涉及 Siri、iCloud 和位置服务等，分组并不意味着它们只服务于 AI。
   配置同时保留真实 IP 与直连 DoH，避免代理不可用时默认直连仍依赖代理 DNS。
+  可读规则集中维护于 [`apple-intelligence.yaml`](rules/source/domain/apple-intelligence.yaml)，
+  编译为 `rules/mrs/domain/apple-intelligence.mrs`，配置通过本仓库的 GitHub
+  rule-provider 下载；分流、DNS 与 Fake-IP 例外均引用该规则集，无需手改三处域名清单。
 - Telegram 在上游 GeoIP 之外保留经本地运行日志确认的窄范围 `/32` 补充规则，
   避免新端点落入最终兜底后在中国大陆直连超时。
 - 未分类境外流量和最终兜底：默认使用“手动选择”。

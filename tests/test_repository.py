@@ -34,7 +34,7 @@ class RepositoryTests(unittest.TestCase):
 
     def test_manifest_ids_and_paths_are_unique(self):
         sources = self.manifest["sources"]
-        self.assertEqual(75, len(sources))
+        self.assertEqual(76, len(sources))
         for key in ["id", "source_path", "runtime_path"]:
             values = [item[key] for item in sources]
             if key == "runtime_path":
@@ -112,51 +112,58 @@ class RepositoryTests(unittest.TestCase):
             "gateway.icloud.com", "probe.icloud.com", "metrics.icloud.com",
             "wps.apple.com", "ls.apple.com",
         }
-        expected_rules = {f"DOMAIN,{host}" for host in exact_hosts}
-        expected_rules.add("DOMAIN-SUFFIX,smoot.apple.com")
-        self.assertEqual(expected_rules, set(GENERATOR.APPLE_INTELLIGENCE_RULES))
-        self.assertEqual(19, len(GENERATOR.APPLE_INTELLIGENCE_RULES))
+        expected = exact_hosts | {"+.smoot.apple.com"}
+        source = ROOT / "rules/source/domain/apple-intelligence.yaml"
+        entries = re.findall(r"^  - (.+)$", source.read_text(), re.MULTILINE)
+        self.assertEqual(expected, set(entries))
+        self.assertEqual(19, len(entries))
+        entry = next(e for e in self.manifest["sources"] if e["id"] == "apple-intelligence")
+        self.assertTrue(entry["local"])
+        self.assertEqual("domain", entry["behavior"])
+        self.assertEqual("mrs", entry["runtime_format"])
         for config in (self.stable, self.redir):
             group = config.split("  - name: Apple Intelligence\n", 1)[1].split("  - name:", 1)[0]
             self.assertRegex(group, r"proxies:\n\s+- 直连\n")
             self.assertIn("      - Azure\n", group)
-            dns = config.split("\ndns:\n", 1)[1].split("\nproxy-groups:", 1)[0]
-            for rule in expected_rules:
-                full_rule = f"{rule},Apple Intelligence"
-                self.assertEqual(1, config.count(full_rule))
-                for broad in (
-                    "RULE-SET,bank,国内", "RULE-SET,category-ads-all,广告拦截",
-                    "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple",
-                    "RULE-SET,cloudflare,Cloudflare", "RULE-SET,china-domain,国内",
-                ):
-                    self.assertLess(config.index(full_rule), config.index(broad))
-                kind, host = rule.split(",", 1)
-                key = f"+.{host}" if kind == "DOMAIN-SUFFIX" else host
-                self.assertIn(
-                    f"    '{key}':\n"
-                    "      - 'https://223.5.5.5/dns-query#DIRECT'\n"
-                    "      - 'https://1.12.12.12/dns-query#DIRECT'",
-                    dns,
-                )
-                if config is self.stable:
-                    self.assertIn(f"    - {rule},real-ip\n", dns)
-            intelligence_rules = [
-                line.strip()[2:] for line in config.splitlines()
-                if line.strip().startswith("- ") and line.endswith(",Apple Intelligence")
-            ]
-            for host, matched in (
-                ("guzzoni.apple.com", True), ("cp4.cloudflare.com", True),
-                ("api.smoot.apple.com", True), ("smoot.apple.com", True),
-                ("www.apple.com", False), ("push.apple.com", False),
-                ("other.cloudflare.com", False), ("sub.guzzoni.apple.com", False),
-            ):
-                hit = any(
-                    (fields[0] == "DOMAIN" and host == fields[1]) or
-                    (fields[0] == "DOMAIN-SUFFIX" and
-                     (host == fields[1] or host.endswith("." + fields[1])))
-                    for fields in (rule.split(",") for rule in intelligence_rules)
-                )
-                self.assertEqual(matched, hit, host)
+            rule = "RULE-SET,apple-intelligence,Apple Intelligence"
+            self.assertEqual(1, config.count(rule))
+            self.assertNotIn("DOMAIN,guzzoni.apple.com,Apple Intelligence", config)
+            for broad in ("RULE-SET,bank,国内", "RULE-SET,category-ads-all,广告拦截",
+                          "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple",
+                          "RULE-SET,cloudflare,Cloudflare", "RULE-SET,china-domain,国内"):
+                self.assertLess(config.index(rule), config.index(broad))
+            self.assertIn("'rule-set:apple-intelligence':\n"
+                          "      - 'https://223.5.5.5/dns-query#DIRECT'\n"
+                          "      - 'https://1.12.12.12/dns-query#DIRECT'", config)
+            self.assertIn("/main/rules/mrs/domain/apple-intelligence.mrs", config)
+        self.assertIn("RULE-SET,apple-intelligence,real-ip", self.stable)
+        self.assertLess(self.stable.index("RULE-SET,apple-intelligence,real-ip"),
+                        self.stable.index("MATCH,fake-ip"))
+
+    def test_gemini_has_an_independent_policy(self):
+        for config in (self.stable, self.redir):
+            self.assertIn("RULE-SET,gemini,Gemini", config)
+            self.assertNotIn("RULE-SET,gemini,AI", config)
+            self.assertIn("RULE-SET,openai,AI", config)
+            self.assertIn("RULE-SET,claude,AI", config)
+            self.assertLess(config.index("RULE-SET,gemini,Gemini"),
+                            config.index("RULE-SET,google-domain,Google"))
+            group = config.split("  - name: Gemini\n", 1)[1].split("  - name:", 1)[0]
+            self.assertRegex(group, r"proxies:\n\s+- 手动选择\n")
+            for option in ("日本-故转", "台湾-故转", "新加坡-故转", "Azure"):
+                self.assertIn("      - " + option + "\n", group)
+
+    def test_policy_display_order(self):
+        settings = json.loads((ROOT / "config/zashboard-settings.json").read_text())
+        folder = json.loads(settings["config/proxy-folders"])["folders"][0]["manualIncludes"]
+        bootstrap = (ROOT / "config/zashboard-folder-bootstrap.js").read_text()
+        js_names = re.findall(r"'([^']+)'", bootstrap.split("const strategyGroups = [", 1)[1].split("]", 1)[0])
+        self.assertEqual(folder, js_names)
+        self.assertEqual(["手动选择", "规则更新"], folder[:2])
+        self.assertEqual(sorted(folder[2:], key=GENERATOR.policy_sort_key), folder[2:])
+        for config in (self.stable, self.redir):
+            names = re.findall(r"^  - name: (.+)$", config, re.MULTILINE)
+            self.assertEqual(folder, names[:len(folder)])
 
     def test_rule_order_and_representative_routes(self):
         expected = [
@@ -277,11 +284,11 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(["Azure"], folders[2]["manualIncludes"])
         bootstrap = (ROOT / "config/zashboard-folder-bootstrap.js").read_text(encoding="utf-8")
         self.assertIn("proxyrule-failover", bootstrap)
-        self.assertIn("2026-11-11-v7", bootstrap)
+        self.assertIn("2026-11-14-v8", bootstrap)
         self.assertIn("manualIncludes: ['Azure']", bootstrap)
         self.assertNotIn("首选", bootstrap)
         self.assertIn("Bing & Rewards", bootstrap)
-        for name in ["Apple Intelligence", "Bing & Rewards", "Steam社区", "Steam下载"]:
+        for name in ["Gemini", "Apple Intelligence", "Bing & Rewards", "Steam社区", "Steam下载"]:
             self.assertIn(name, folders[0]["manualIncludes"])
             self.assertIn(name, bootstrap)
 

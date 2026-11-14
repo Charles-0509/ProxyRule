@@ -1204,6 +1204,24 @@
       "line_count": 4
     },
     {
+      "id": "apple-intelligence",
+      "display_name": "Apple Intelligence / Shared Apple Endpoints",
+      "upstream_repo": "Charles-0509/ProxyRule",
+      "upstream_ref": "main",
+      "source_url": null,
+      "local": true,
+      "provenance": "User-supplied 2026-11-11; original upstream URL and license not provided",
+      "behavior": "domain",
+      "source_format": "yaml",
+      "source_path": "rules/source/domain/apple-intelligence.yaml",
+      "runtime_format": "mrs",
+      "runtime_path": "rules/mrs/domain/apple-intelligence.mrs",
+      "license": "NOASSERTION",
+      "max_size": 100000,
+      "sha256": "55f38c455b00d008e2b08e74d80f26b979e2cb69dbcb43900c496f71367afc98",
+      "line_count": 19
+    },
+    {
       "id": "compatibility",
       "display_name": "Home Network Compatibility / Domain",
       "upstream_repo": "Charles-0509/ProxyRule",

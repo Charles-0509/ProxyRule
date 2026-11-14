@@ -4,10 +4,21 @@
 配置文件的一部分。仓库提供了 [Zashboard 设置文件](../config/zashboard-settings.json)，
 用于建立以下三个标签：
 
-- **策略组**：业务分流策略，顶部是“手动选择”；`Apple Intelligence`、`Bing & Rewards`、
+- **策略组**：业务分流策略，顶部是“手动选择”；`Gemini`、`Apple Intelligence`、`Bing & Rewards`、
   `Steam社区` 和 `Steam下载` 也固定归入此处。
 - **故障转移**：所有地区和全节点的“故转”组。
 - **节点组**：所有手动节点组和自动测速组。
+
+业务策略从上到下固定以“手动选择”“规则更新”开头，其余按英文名称排序，
+不区分大小写，中文显示名称保持不变。中文排序键为：学术 Academic、广告拦截
+AdBlock、国内 China、加密货币 Cryptocurrency、开发工具 Developer Tools、
+游戏 Gaming、国外 Global、办公协作 Office、其他 Others、测速 Speedtest、
+Steam社区 Steam Community、Steam下载 Steam Download、流媒体 Streaming。
+例如前几项为：手动选择 → 规则更新 → 学术 → 广告拦截 → AI → Amazon → Apple。
+
+[Zashboard 官方说明](https://github.com/Zephyruso/zashboard#tips)指出，策略组顺序
+跟随核心 GLOBAL 列表，默认来自配置文件；因此仓库同时调整 YAML 的策略组声明顺序，
+并同步文件夹成员列表。该排序只影响展示，不改变分流匹配顺序、策略默认值或节点顺序。
 
 ## 导入方法
 
