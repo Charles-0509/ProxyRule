@@ -1,7 +1,31 @@
 (() => {
   const version = '2026-11-14-v8'
   const versionKey = 'proxyrule/folder-layout-version'
-  if (localStorage.getItem(versionKey) === version) return
+  // Repair existing browser layouts without resetting folders or preferences.
+  try {
+    const state = JSON.parse(localStorage.getItem('config/proxy-folders'))
+    const strategy = state?.folders?.find(
+      (folder) => folder.id === 'proxyrule-strategy' || folder.name === '策略组',
+    )
+    if (strategy && Array.isArray(strategy.manualIncludes)) {
+      let changed = false
+      if (!strategy.manualIncludes.includes('Gemini')) {
+        const index = strategy.manualIncludes.indexOf('GitHub')
+        strategy.manualIncludes.splice(index < 0 ? strategy.manualIncludes.length : index, 0, 'Gemini')
+        changed = true
+      }
+      for (const folder of state.folders) {
+        if (folder !== strategy && folder.manualIncludes?.includes('Gemini')) {
+          folder.manualIncludes = folder.manualIncludes.filter((name) => name !== 'Gemini')
+          changed = true
+        }
+      }
+      if (changed) localStorage.setItem('config/proxy-folders', JSON.stringify(state))
+      return
+    }
+  } catch {
+    // Missing or invalid layout: initialize the default folders below.
+  }
 
   const strategyGroups = [
     '手动选择',
