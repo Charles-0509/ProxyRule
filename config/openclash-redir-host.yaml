@@ -114,6 +114,15 @@ dns:
   direct-nameserver-follow-policy: false
   respect-rules: true
   nameserver-policy:
+    'rule-set:academic-cn':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:academic-cn-extra':
+      - 'https://223.5.5.5/dns-query#DIRECT'
+      - 'https://1.12.12.12/dns-query#DIRECT'
+    'rule-set:category-scholar-!cn':
+      - 'https://1.1.1.1/dns-query#手动选择'
+      - 'https://8.8.8.8/dns-query#手动选择'
     '+.edu.cn':
       - 'https://223.5.5.5/dns-query#DIRECT'
       - 'https://1.12.12.12/dns-query#DIRECT'
@@ -191,7 +200,7 @@ proxy-groups:
       - 所有-自动
       - Azure
       - 直连
-  - name: 学术
+  - name: 学术期刊网站
     type: select
     proxies:
       - 手动选择
@@ -383,24 +392,6 @@ proxy-groups:
       - 所有-自动
       - 直连
       - 拒绝
-  - name: 开发工具
-    type: select
-    proxies:
-      - 手动选择
-      - 所有-故转
-      - 香港-故转
-      - 台湾-故转
-      - 日本-故转
-      - 新加坡-故转
-      - 韩国-故转
-      - 美国-故转
-      - 英国-故转
-      - 其他地区-故转
-      - Azure
-      - 所有-手动
-      - 所有-自动
-      - 直连
-      - 拒绝
   - name: Discord
     type: select
     proxies:
@@ -420,6 +411,24 @@ proxy-groups:
       - 直连
       - 拒绝
   - name: Disney+
+    type: select
+    proxies:
+      - 手动选择
+      - 所有-故转
+      - 香港-故转
+      - 台湾-故转
+      - 日本-故转
+      - 新加坡-故转
+      - 韩国-故转
+      - 美国-故转
+      - 英国-故转
+      - 其他地区-故转
+      - Azure
+      - 所有-手动
+      - 所有-自动
+      - 直连
+      - 拒绝
+  - name: Docker
     type: select
     proxies:
       - 手动选择
@@ -473,7 +482,7 @@ proxy-groups:
       - 所有-自动
       - 直连
       - 拒绝
-  - name: 游戏
+  - name: 游戏平台
     type: select
     proxies:
       - 手动选择
@@ -510,6 +519,24 @@ proxy-groups:
       - 直连
       - 拒绝
   - name: GitHub
+    type: select
+    proxies:
+      - 手动选择
+      - 所有-故转
+      - 香港-故转
+      - 台湾-故转
+      - 日本-故转
+      - 新加坡-故转
+      - 韩国-故转
+      - 美国-故转
+      - 英国-故转
+      - 其他地区-故转
+      - Azure
+      - 所有-手动
+      - 所有-自动
+      - 直连
+      - 拒绝
+  - name: GitLab
     type: select
     proxies:
       - 手动选择
@@ -653,7 +680,7 @@ proxy-groups:
       - 所有-自动
       - 直连
       - 拒绝
-  - name: 办公协作
+  - name: Notion
     type: select
     proxies:
       - 手动选择
@@ -725,7 +752,43 @@ proxy-groups:
       - 所有-自动
       - 直连
       - 拒绝
+  - name: Popcorn
+    type: select
+    proxies:
+      - 手动选择
+      - 所有-故转
+      - 香港-故转
+      - 台湾-故转
+      - 日本-故转
+      - 新加坡-故转
+      - 韩国-故转
+      - 美国-故转
+      - 英国-故转
+      - 其他地区-故转
+      - Azure
+      - 所有-手动
+      - 所有-自动
+      - 直连
+      - 拒绝
   - name: Reddit
+    type: select
+    proxies:
+      - 手动选择
+      - 所有-故转
+      - 香港-故转
+      - 台湾-故转
+      - 日本-故转
+      - 新加坡-故转
+      - 韩国-故转
+      - 美国-故转
+      - 英国-故转
+      - 其他地区-故转
+      - Azure
+      - 所有-手动
+      - 所有-自动
+      - 直连
+      - 拒绝
+  - name: Slack
     type: select
     proxies:
       - 手动选择
@@ -815,24 +878,6 @@ proxy-groups:
       - 所有-手动
       - 所有-自动
       - 拒绝
-  - name: 流媒体
-    type: select
-    proxies:
-      - 手动选择
-      - 所有-故转
-      - 香港-故转
-      - 台湾-故转
-      - 日本-故转
-      - 新加坡-故转
-      - 韩国-故转
-      - 美国-故转
-      - 英国-故转
-      - 其他地区-故转
-      - Azure
-      - 所有-手动
-      - 所有-自动
-      - 直连
-      - 拒绝
   - name: Telegram
     type: select
     proxies:
@@ -906,6 +951,24 @@ proxy-groups:
       - 直连
       - 拒绝
   - name: YouTube
+    type: select
+    proxies:
+      - 手动选择
+      - 所有-故转
+      - 香港-故转
+      - 台湾-故转
+      - 日本-故转
+      - 新加坡-故转
+      - 韩国-故转
+      - 美国-故转
+      - 英国-故转
+      - 其他地区-故转
+      - Azure
+      - 所有-手动
+      - 所有-自动
+      - 直连
+      - 拒绝
+  - name: Zoom
     type: select
     proxies:
       - 手动选择
@@ -1136,6 +1199,9 @@ rules:
   - IP-CIDR6,fe80::/10,国内,no-resolve
   - IP-CIDR6,ff00::/8,国内,no-resolve
   - RULE-SET,apple-intelligence,Apple Intelligence
+  - RULE-SET,academic-cn,国内
+  - RULE-SET,academic-cn-extra,国内
+  - RULE-SET,category-scholar-!cn,学术期刊网站
   - RULE-SET,bank,国内
   - RULE-SET,compatibility,国内
   - RULE-SET,private-domain,国内
@@ -1155,10 +1221,10 @@ rules:
   - RULE-SET,groq,AI
   - RULE-SET,grok,AI
   - RULE-SET,github,GitHub
-  - RULE-SET,gitlab,开发工具
+  - RULE-SET,gitlab,GitLab
   - RULE-SET,bing,Bing & Rewards
   - RULE-SET,microsoft-rewards,Bing & Rewards
-  - RULE-SET,docker,开发工具
+  - RULE-SET,docker,Docker
   - RULE-SET,cloudflare,Cloudflare
   - RULE-SET,telegram-domain,Telegram
   - IP-CIDR,194.221.250.50/32,Telegram,no-resolve
@@ -1177,12 +1243,11 @@ rules:
   - RULE-SET,dropbox,Dropbox
   - RULE-SET,google-domain,Google
   - RULE-SET,google-ip,Google,no-resolve
-  - RULE-SET,notion,办公协作
-  - RULE-SET,slack,办公协作
-  - RULE-SET,zoom,办公协作
+  - RULE-SET,notion,Notion
+  - RULE-SET,slack,Slack
+  - RULE-SET,zoom,Zoom
   - RULE-SET,linkedin,LinkedIn
   - RULE-SET,paypal,PayPal
-  - RULE-SET,category-scholar-!cn,学术
   - RULE-SET,okx,加密货币
   - RULE-SET,bybit,加密货币
   - RULE-SET,binance,加密货币
@@ -1194,19 +1259,19 @@ rules:
   - RULE-SET,disney,Disney+
   - RULE-SET,amazon,Amazon
   - RULE-SET,crunchyroll,Crunchyroll
-  - RULE-SET,popcorn,流媒体
+  - RULE-SET,popcorn,Popcorn
   - RULE-SET,hbo,HBO
   - RULE-SET,spotify,Spotify
   - RULE-SET,steam-community,Steam社区
   - RULE-SET,steam-download,Steam下载
   - RULE-SET,steam-download-ip,Steam下载,no-resolve
-  - RULE-SET,nvidia,游戏
-  - RULE-SET,epic,游戏
-  - RULE-SET,ea,游戏
-  - RULE-SET,blizzard,游戏
-  - RULE-SET,ubi,游戏
-  - RULE-SET,playstation,游戏
-  - RULE-SET,nintendo,游戏
+  - RULE-SET,nvidia,游戏平台
+  - RULE-SET,epic,游戏平台
+  - RULE-SET,ea,游戏平台
+  - RULE-SET,blizzard,游戏平台
+  - RULE-SET,ubi,游戏平台
+  - RULE-SET,playstation,游戏平台
+  - RULE-SET,nintendo,游戏平台
   - RULE-SET,direct,国内
   - RULE-SET,china-domain,国内
   - RULE-SET,china-ip,国内,no-resolve
@@ -1860,6 +1925,24 @@ rule-providers:
     format: mrs
     path: './rule_provider/proxyrule/speedtest.mrs'
     url: 'https://raw.githubusercontent.com/Charles-0509/ProxyRule/main/rules/mrs/domain/speedtest.mrs'
+    interval: 86400
+    proxy: 规则更新
+    size-limit: 8000000
+  academic-cn-extra:
+    type: http
+    behavior: domain
+    format: mrs
+    path: './rule_provider/proxyrule/academic-cn-extra.mrs'
+    url: 'https://raw.githubusercontent.com/Charles-0509/ProxyRule/main/rules/mrs/domain/academic-cn-extra.mrs'
+    interval: 86400
+    proxy: 规则更新
+    size-limit: 100000
+  academic-cn:
+    type: http
+    behavior: domain
+    format: mrs
+    path: './rule_provider/proxyrule/academic-cn.mrs'
+    url: 'https://raw.githubusercontent.com/Charles-0509/ProxyRule/main/rules/mrs/domain/academic-cn.mrs'
     interval: 86400
     proxy: 规则更新
     size-limit: 8000000

@@ -39,6 +39,15 @@
 - `*.edu.cn` 和 `*.zfye.site`：无条件直连，优先级高于广告和代理规则。
 - 广告规则：拒绝，可在“广告拦截”组临时切换为直连排查误杀。
 - AI、GitHub、Telegram、社交、流媒体、游戏等：使用各自策略组。
+- `学术期刊网站`：原“学术”统一更名，不拆分平台；Google Scholar、IEEE、ACM、
+  Elsevier、Springer Nature 等保留在同一组，并优先于 Google/Gemini 通用规则。
+  国内学术清单和补充规则优先进入“国内”，包括知网、万方、维普、超星、读秀、
+  国家哲学社会科学学术期刊数据库和库客；同步使用直连 DoH 和真实 IP。
+  按平台归属分类，不把所有 `.cn` 域名或“国内可访问”的国外平台都视作国内学术。
+- `游戏平台`：原“游戏”更名，继续统一控制 NVIDIA、Epic、EA、Battle.net、Ubisoft、
+  PlayStation 和 Nintendo；Steam社区、Steam下载的独立分流保留。
+- `GitLab`、`Docker`：从“开发工具”拆出；`Notion`、`Slack`、`Zoom`：从“办公协作”拆出。
+  原“流媒体”实际只挂载 `popcorn.plus`，现在更名为 `Popcorn`。加密货币保持统一分组。
 - `Gemini`：从 AI 中独立，沿用仓库的 `gemini.list`，优先于 Google 通用规则。
   默认“手动选择”；如果该组当前的美国出口无法访问 Google，请在 Gemini 组中
   单独选择已验证可用的节点或地区，不必改变 OpenAI 等其他 AI 服务的出口。

@@ -120,11 +120,11 @@ def group_mapping(name: str, proxies: list[str]) -> list[str]:
 
 
 POLICY_ENGLISH_NAMES = {
-    "学术": "Academic", "广告拦截": "AdBlock", "国内": "China",
-    "加密货币": "Cryptocurrency", "开发工具": "Developer Tools",
-    "游戏": "Gaming", "国外": "Global", "办公协作": "Office",
+    "学术期刊网站": "Academic Journals", "广告拦截": "AdBlock", "国内": "China",
+    "加密货币": "Cryptocurrency",
+    "游戏平台": "Gaming Platforms", "国外": "Global",
     "其他": "Others", "测速": "Speedtest", "Steam社区": "Steam Community",
-    "Steam下载": "Steam Download", "流媒体": "Streaming",
+    "Steam下载": "Steam Download",
 }
 
 
@@ -166,10 +166,10 @@ def groups_block() -> str:
     policies += group_mapping("规则更新", ["手动选择", "所有-故转", "所有-自动", "Azure", "直连"])
     service_choices = ["手动选择", "所有-故转"] + fallbacks + ["Azure", "所有-手动", "所有-自动", "直连", "拒绝"]
     service_groups = [
-        "AI", "Gemini", "Apple Intelligence", "GitHub", "开发工具", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
+        "AI", "Gemini", "Apple Intelligence", "GitHub", "GitLab", "Docker", "Cloudflare", "Telegram", "Discord", "WhatsApp", "X",
         "Facebook", "Instagram", "Reddit", "TikTok", "YouTube", "Netflix", "Disney+", "HBO",
-        "Amazon", "Crunchyroll", "流媒体", "Spotify", "Steam社区", "Steam下载", "游戏", "Apple", "Bing & Rewards", "Microsoft", "OneDrive",
-        "Google", "办公协作", "Dropbox", "LinkedIn", "PayPal", "学术", "测速", "加密货币", "国外", "其他",
+        "Amazon", "Crunchyroll", "Popcorn", "Spotify", "Steam社区", "Steam下载", "游戏平台", "Apple", "Bing & Rewards", "Microsoft", "OneDrive",
+        "Google", "Notion", "Slack", "Zoom", "Dropbox", "LinkedIn", "PayPal", "学术期刊网站", "测速", "加密货币", "国外", "其他",
         "ApplePush", "国内", "广告拦截",
     ]
     for name in sorted(service_groups, key=policy_sort_key):
@@ -193,6 +193,8 @@ def dns_block(enhanced_mode: str) -> str:
     - DOMAIN-SUFFIX,argotunnel.com,real-ip
     - DOMAIN-SUFFIX,cftunnel.com,real-ip
     - RULE-SET,apple-intelligence,real-ip
+    - RULE-SET,academic-cn,real-ip
+    - RULE-SET,academic-cn-extra,real-ip
     - RULE-SET,private-domain,real-ip
     - RULE-SET,china-domain,real-ip
     - RULE-SET,connectivity-check,real-ip
@@ -207,6 +209,13 @@ def dns_block(enhanced_mode: str) -> str:
         "bing", "microsoft-rewards", "direct", "steam-download",
     ]
     policy_lines: list[str] = []
+    # These sets describe ownership, unlike china-domain's reachable-from-China list.
+    for ident, resolvers in (
+        ("academic-cn", ["https://223.5.5.5/dns-query#DIRECT", "https://1.12.12.12/dns-query#DIRECT"]),
+        ("academic-cn-extra", ["https://223.5.5.5/dns-query#DIRECT", "https://1.12.12.12/dns-query#DIRECT"]),
+        ("category-scholar-!cn", ["https://1.1.1.1/dns-query#手动选择", "https://8.8.8.8/dns-query#手动选择"]),
+    ):
+        policy_lines += [f"    'rule-set:{ident}':"] + [f"      - '{url}'" for url in resolvers]
     for domain in ("edu.cn", "zfye.site", "argotunnel.com", "cftunnel.com"):
         policy_lines += [
             f"    '+.{domain}':",
@@ -259,6 +268,9 @@ def rules_block() -> str:
         "IP-CIDR6,::1/128,国内,no-resolve", "IP-CIDR6,fc00::/7,国内,no-resolve",
         "IP-CIDR6,fe80::/10,国内,no-resolve", "IP-CIDR6,ff00::/8,国内,no-resolve",
         "RULE-SET,apple-intelligence,Apple Intelligence",
+        "RULE-SET,academic-cn,国内",
+        "RULE-SET,academic-cn-extra,国内",
+        "RULE-SET,category-scholar-!cn,学术期刊网站",
         "RULE-SET,bank,国内", "RULE-SET,compatibility,国内", "RULE-SET,private-domain,国内",
         "RULE-SET,category-ads-all,广告拦截", "RULE-SET,block,广告拦截",
         "RULE-SET,apple-push,ApplePush", "RULE-SET,connectivity-check,国内", "RULE-SET,category-ntp,国内",
@@ -266,8 +278,8 @@ def rules_block() -> str:
         "RULE-SET,openai,AI", "RULE-SET,claude,AI", "RULE-SET,meta-ai,AI", "RULE-SET,perplexity,AI",
         "RULE-SET,copilot,AI", "RULE-SET,gemini,Gemini", "RULE-SET,groq,AI", "RULE-SET,grok,AI",
         "RULE-SET,github,GitHub",
-        "RULE-SET,gitlab,开发工具", "RULE-SET,bing,Bing & Rewards", "RULE-SET,microsoft-rewards,Bing & Rewards",
-        "RULE-SET,docker,开发工具", "RULE-SET,cloudflare,Cloudflare",
+        "RULE-SET,gitlab,GitLab", "RULE-SET,bing,Bing & Rewards", "RULE-SET,microsoft-rewards,Bing & Rewards",
+        "RULE-SET,docker,Docker", "RULE-SET,cloudflare,Cloudflare",
         "RULE-SET,telegram-domain,Telegram",
         *(f"IP-CIDR,{cidr},Telegram,no-resolve" for cidr in TELEGRAM_OBSERVED_IPS),
         "RULE-SET,telegram-ip,Telegram,no-resolve",
@@ -276,19 +288,19 @@ def rules_block() -> str:
         "RULE-SET,apple-cn,国内", "RULE-SET,apple,Apple", "RULE-SET,apple-custom,Apple",
         "RULE-SET,microsoft,Microsoft", "RULE-SET,onedrive,OneDrive", "RULE-SET,dropbox,Dropbox",
         "RULE-SET,google-domain,Google", "RULE-SET,google-ip,Google,no-resolve",
-        "RULE-SET,notion,办公协作", "RULE-SET,slack,办公协作", "RULE-SET,zoom,办公协作",
-        "RULE-SET,linkedin,LinkedIn", "RULE-SET,paypal,PayPal", "RULE-SET,category-scholar-!cn,学术",
+        "RULE-SET,notion,Notion", "RULE-SET,slack,Slack", "RULE-SET,zoom,Zoom",
+        "RULE-SET,linkedin,LinkedIn", "RULE-SET,paypal,PayPal",
         "RULE-SET,okx,加密货币", "RULE-SET,bybit,加密货币", "RULE-SET,binance,加密货币",
         "RULE-SET,bilibili,国内", "RULE-SET,youtube,YouTube", "RULE-SET,tiktok,TikTok",
         "RULE-SET,netflix-domain,Netflix", "RULE-SET,netflix-ip,Netflix,no-resolve", "RULE-SET,disney,Disney+",
-        "RULE-SET,amazon,Amazon", "RULE-SET,crunchyroll,Crunchyroll", "RULE-SET,popcorn,流媒体", "RULE-SET,hbo,HBO",
+        "RULE-SET,amazon,Amazon", "RULE-SET,crunchyroll,Crunchyroll", "RULE-SET,popcorn,Popcorn", "RULE-SET,hbo,HBO",
         "RULE-SET,spotify,Spotify",
         # Store/community/chat/CM traffic must win before the overlapping CDN IP
         # ranges. The latter are only a fallback for pure-IP download flows.
         "RULE-SET,steam-community,Steam社区", "RULE-SET,steam-download,Steam下载",
         "RULE-SET,steam-download-ip,Steam下载,no-resolve",
-        "RULE-SET,nvidia,游戏", "RULE-SET,epic,游戏", "RULE-SET,ea,游戏",
-        "RULE-SET,blizzard,游戏", "RULE-SET,ubi,游戏", "RULE-SET,playstation,游戏", "RULE-SET,nintendo,游戏",
+        "RULE-SET,nvidia,游戏平台", "RULE-SET,epic,游戏平台", "RULE-SET,ea,游戏平台",
+        "RULE-SET,blizzard,游戏平台", "RULE-SET,ubi,游戏平台", "RULE-SET,playstation,游戏平台", "RULE-SET,nintendo,游戏平台",
         "RULE-SET,direct,国内", "RULE-SET,china-domain,国内", "RULE-SET,china-ip,国内,no-resolve",
         "RULE-SET,proxy,国外", "RULE-SET,global,国外", "MATCH,其他",
     ]

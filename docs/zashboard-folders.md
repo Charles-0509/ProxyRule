@@ -10,11 +10,10 @@
 - **节点组**：所有手动节点组和自动测速组。
 
 业务策略从上到下固定以“手动选择”“规则更新”开头，其余按英文名称排序，
-不区分大小写，中文显示名称保持不变。中文排序键为：学术 Academic、广告拦截
-AdBlock、国内 China、加密货币 Cryptocurrency、开发工具 Developer Tools、
-游戏 Gaming、国外 Global、办公协作 Office、其他 Others、测速 Speedtest、
-Steam社区 Steam Community、Steam下载 Steam Download、流媒体 Streaming。
-例如前几项为：手动选择 → 规则更新 → 学术 → 广告拦截 → AI → Amazon → Apple。
+不区分大小写，中文排序键为：学术期刊网站 Academic Journals、广告拦截
+AdBlock、国内 China、加密货币 Cryptocurrency、游戏平台 Gaming Platforms、
+国外 Global、其他 Others、测速 Speedtest、Steam社区 Steam Community、Steam下载 Steam Download。
+例如前几项为：手动选择 → 规则更新 → 学术期刊网站 → 广告拦截 → AI → Amazon → Apple。
 
 [Zashboard 官方说明](https://github.com/Zephyruso/zashboard#tips)指出，策略组顺序
 跟随核心 GLOBAL 列表，默认来自配置文件；因此仓库同时调整 YAML 的策略组声明顺序，
@@ -38,7 +37,8 @@ Zashboard 将这些设置保存在当前浏览器中。更换电脑、浏览器�
 仓库还提供 [一次性初始化脚本](../config/zashboard-folder-bootstrap.js)。将该文件
 放入 Zashboard 的 UI 目录，并在 `index.html` 的应用脚本之前加载，可以让每个
 浏览器第一次打开时自动建立三个文件夹。已有“策略组”文件夹时，脚本仅确保
-Gemini 归入此处，并移除其他文件夹对 Gemini 的显式归类；保留其余文件夹、
+Gemini 以及新增业务分组归入此处，迁移“学术”“游戏”“流媒体”的旧名称，
+并将“开发工具”“办公协作”成员替换为对应软件；保留其余文件夹、
 成员、当前标签页和测速设置，重复加载不会重复插入。更新 Zashboard 后如果 UI 文件被覆盖，需要
 重新安装该脚本。
 

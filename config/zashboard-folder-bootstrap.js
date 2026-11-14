@@ -1,5 +1,5 @@
 (() => {
-  const version = '2026-11-14-v8'
+  const version = '2026-11-14-v10'
   const versionKey = 'proxyrule/folder-layout-version'
   // Repair existing browser layouts without resetting folders or preferences.
   try {
@@ -9,10 +9,24 @@
     )
     if (strategy && Array.isArray(strategy.manualIncludes)) {
       let changed = false
-      if (!strategy.manualIncludes.includes('Gemini')) {
-        const index = strategy.manualIncludes.indexOf('GitHub')
-        strategy.manualIncludes.splice(index < 0 ? strategy.manualIncludes.length : index, 0, 'Gemini')
-        changed = true
+      const replacements = {
+        学术: ['学术期刊网站'], 游戏: ['游戏平台'], 流媒体: ['Popcorn'],
+        开发工具: ['GitLab', 'Docker'], 办公协作: ['Notion', 'Slack', 'Zoom'],
+      }
+      for (const folder of state.folders) {
+        if (!Array.isArray(folder.manualIncludes)) continue
+        const members = [...new Set(folder.manualIncludes.flatMap((name) => replacements[name] || [name]))]
+        if (JSON.stringify(members) !== JSON.stringify(folder.manualIncludes)) {
+          folder.manualIncludes = members
+          changed = true
+        }
+      }
+      for (const name of ['Gemini', 'GitLab', 'Docker', 'Notion', 'Slack', 'Zoom', 'Popcorn', '学术期刊网站', '游戏平台']) {
+        if (!strategy.manualIncludes.includes(name)) {
+          const index = name === 'Gemini' ? strategy.manualIncludes.indexOf('GitHub') : -1
+          strategy.manualIncludes.splice(index < 0 ? strategy.manualIncludes.length : index, 0, name)
+          changed = true
+        }
       }
       for (const folder of state.folders) {
         if (folder !== strategy && folder.manualIncludes?.includes('Gemini')) {
@@ -30,7 +44,7 @@
   const strategyGroups = [
     '手动选择',
     '规则更新',
-    '学术',
+    '学术期刊网站',
     '广告拦截',
     'AI',
     'Amazon',
@@ -42,14 +56,15 @@
     'Cloudflare',
     'Crunchyroll',
     '加密货币',
-    '开发工具',
     'Discord',
     'Disney+',
+    'Docker',
     'Dropbox',
     'Facebook',
-    '游戏',
+    '游戏平台',
     'Gemini',
     'GitHub',
+    'GitLab',
     '国外',
     'Google',
     'HBO',
@@ -57,21 +72,23 @@
     'LinkedIn',
     'Microsoft',
     'Netflix',
-    '办公协作',
+    'Notion',
     'OneDrive',
     '其他',
     'PayPal',
+    'Popcorn',
     'Reddit',
+    'Slack',
     '测速',
     'Spotify',
     'Steam社区',
     'Steam下载',
-    '流媒体',
     'Telegram',
     'TikTok',
     'WhatsApp',
     'X',
     'YouTube',
+    'Zoom',
   ]
   const folderState = {
     folders: [

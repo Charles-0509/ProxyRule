@@ -14,6 +14,7 @@ generate:
 
 test: build generate
 	python3 -m unittest discover -s tests -v
+	node tests/test_zashboard_migration.js
 	python3 scripts/generate_configs.py --test-mode --output-dir .cache
 	mkdir -p .cache/mihomo-home
 	SAFE_PATHS="$$(pwd)" $$(python3 scripts/ensure_mihomo.py) -t -d .cache/mihomo-home -f .cache/openclash-test.yaml

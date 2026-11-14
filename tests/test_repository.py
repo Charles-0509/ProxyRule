@@ -34,7 +34,7 @@ class RepositoryTests(unittest.TestCase):
 
     def test_manifest_ids_and_paths_are_unique(self):
         sources = self.manifest["sources"]
-        self.assertEqual(76, len(sources))
+        self.assertEqual(78, len(sources))
         for key in ["id", "source_path", "runtime_path"]:
             values = [item[key] for item in sources]
             if key == "runtime_path":
@@ -172,18 +172,20 @@ class RepositoryTests(unittest.TestCase):
             "DOMAIN-SUFFIX,edu.cn,国内",
             "DOMAIN-SUFFIX,zfye.site,国内",
             "IP-CIDR,192.168.0.0/16,国内,no-resolve",
+            "RULE-SET,academic-cn,国内",
+            "RULE-SET,academic-cn-extra,国内",
+            "RULE-SET,category-scholar-!cn,学术期刊网站",
             "RULE-SET,bank,国内",
             "RULE-SET,category-ads-all,广告拦截",
             "RULE-SET,apple-push,ApplePush",
             "RULE-SET,openai,AI",
             "RULE-SET,github,GitHub",
-            "RULE-SET,gitlab,开发工具",
+            "RULE-SET,gitlab,GitLab",
             "RULE-SET,bing,Bing & Rewards",
             "RULE-SET,microsoft-rewards,Bing & Rewards",
             "IP-CIDR,194.221.250.50/32,Telegram,no-resolve",
             "RULE-SET,telegram-ip,Telegram,no-resolve",
-            "RULE-SET,notion,办公协作",
-            "RULE-SET,category-scholar-!cn,学术",
+            "RULE-SET,notion,Notion",
             "RULE-SET,bilibili,国内",
             "RULE-SET,steam-community,Steam社区",
             "RULE-SET,steam-download,Steam下载",
@@ -284,13 +286,38 @@ class RepositoryTests(unittest.TestCase):
         self.assertEqual(["Azure"], folders[2]["manualIncludes"])
         bootstrap = (ROOT / "config/zashboard-folder-bootstrap.js").read_text(encoding="utf-8")
         self.assertIn("proxyrule-failover", bootstrap)
-        self.assertIn("2026-11-14-v8", bootstrap)
+        self.assertIn("2026-11-14-v10", bootstrap)
         self.assertIn("manualIncludes: ['Azure']", bootstrap)
         self.assertNotIn("首选", bootstrap)
         self.assertIn("Bing & Rewards", bootstrap)
-        for name in ["Gemini", "Apple Intelligence", "Bing & Rewards", "Steam社区", "Steam下载"]:
+        for name in ["Gemini", "Apple Intelligence", "Bing & Rewards", "Steam社区", "Steam下载", "学术期刊网站", "游戏平台", "GitLab", "Docker", "Notion", "Slack", "Zoom", "Popcorn"]:
             self.assertIn(name, folders[0]["manualIncludes"])
             self.assertIn(name, bootstrap)
+
+    def test_academic_ownership_and_concrete_policies(self):
+        def domains(filename):
+            text = (ROOT / "rules/source/domain" / filename).read_text()
+            return set(re.findall(r"^\s+- (.+)$", text, re.MULTILINE))
+        domestic = domains("academic-cn.yaml") | domains("academic-cn-extra.yaml")
+        foreign = domains("category-scholar-!cn.yaml")
+        for domain in ("cnki.net", "cnki.com.cn", "wanfangdata.com.cn", "cqvip.com", "chaoxing.com", "nssd.cn", "kuke.com"):
+            self.assertIn("+." + domain, domestic)
+        for domain in ("scholar.google.cn", "+.ieee.org", "+.acm.org", "+.nature.com", "+.sciencedirect.com"):
+            self.assertIn(domain, foreign)
+            self.assertNotIn(domain, domestic)
+        for config in (self.stable, self.redir):
+            for provider in ("academic-cn", "academic-cn-extra"):
+                self.assertLess(config.index(f"RULE-SET,{provider},国内"), config.index("RULE-SET,category-scholar-!cn,学术期刊网站"))
+                self.assertIn(f"'rule-set:{provider}':\n      - 'https://223.5.5.5/dns-query#DIRECT'", config)
+            for broader in ("RULE-SET,gemini,Gemini", "RULE-SET,google-domain,Google"):
+                self.assertLess(config.index("RULE-SET,category-scholar-!cn,学术期刊网站"), config.index(broader))
+            self.assertLess(config.index("'rule-set:category-scholar-!cn':"), config.index("'rule-set:china-domain':"))
+            for provider, policy in (("gitlab", "GitLab"), ("docker", "Docker"), ("notion", "Notion"), ("slack", "Slack"), ("zoom", "Zoom"), ("popcorn", "Popcorn"), ("epic", "游戏平台"), ("okx", "加密货币")):
+                self.assertIn(f"RULE-SET,{provider},{policy}", config)
+            for old in ("学术", "游戏", "开发工具", "办公协作", "流媒体"):
+                self.assertNotIn(f"  - name: {old}\n", config)
+        for provider in ("academic-cn", "academic-cn-extra"):
+            self.assertIn(f"RULE-SET,{provider},real-ip", self.stable)
 
     def test_update_report_has_no_unresolved_alerts(self):
         report = (ROOT / "UPSTREAM_UPDATE_REPORT.md").read_text(encoding="utf-8")
